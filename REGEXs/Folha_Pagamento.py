@@ -1,0 +1,39 @@
+import re
+findCnpj = re.compile(r'\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
+findTotalARecolher = re.compile(r'(?:(?:Líquido Geral:\n\n)(?:\d+.\d+,\d+\n)(\d+.\d+,\d+))')
+findCompetencia= re.compile(r'^\d{2}\/\d{4}',flags=re.MULTILINE)
+
+def regex_folha_pagamento(contra_cheque, obj_response):
+    if re.search(r'Sistema licenciado para POLLO CONSULTORIA CONTABIL E SISTEMAS LTDA - ME',contra_cheque) is not None and re.search(r'Total Geral Descontos:',contra_cheque) is not None and re.search(r'Líquido Geral:',contra_cheque) is not None and re.search(r'Total Geral Proventos:',contra_cheque) is not None: 
+        obj_response["Nome"]="Folha de Pagamento Dominio"
+        obj_response["Tipo"]="49"
+        cnpj = findCnpj.search(contra_cheque).group()
+        cnpjNum=""
+        for ch in cnpj:
+            if ch.isdigit():
+                cnpjNum += ch
+        obj_response["Cnpj"]=cnpjNum
+        valorTotal = findTotalARecolher.search(contra_cheque).group().split("\n")[3]
+        valorTotalNum=""
+        for num in valorTotal:
+            if num.isdigit():
+                valorTotalNum += num
+        obj_response["Total"]=valorTotalNum
+        mes,ano = findCompetencia.search(contra_cheque).group().split("/")
+        obj_response["Mes"]=mes
+        obj_response["Ano"]=ano
+        #ISSO DEPOIS VAI SAIR
+        import json
+        arquivo = open(obj_response["Nome"]+".txt", "w")
+        json.dump(obj_response,arquivo,ensure_ascii=False)
+        #ISSO DEPOIS VAI SAIR
+        # import json
+        # arquivo = open(obj_response["Nome"]+".txt", "w")
+        # obj_response["Mes"]=int(obj_response["Mes"])
+        # obj_response["Ano"]=int(obj_response["Ano"])
+        # obj_response["Valor"]=int(obj_response["Valor"])
+        # obj_response["Multa"]=int(obj_response["Multa"])
+        # obj_response["Total"]=int(obj_response["Total"])
+        # json.dump(obj_response,arquivo,ensure_ascii=False)
+        return obj_response
+    return None
