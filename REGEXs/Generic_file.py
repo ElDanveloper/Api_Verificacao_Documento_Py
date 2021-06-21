@@ -1,4 +1,5 @@
 import re
+from _removeMask import numberWithoutMask
 from validate_docbr import CPF,CNPJ
 cpfValidate=CPF()
 cnpjValidate=CNPJ()

@@ -1,4 +1,5 @@
 import re
+from _removeMask import numberWithoutMask
 findCnpj = re.compile(r'\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
 findEmpresa = re.compile(r'NOME EMPRESARIAL\n(\w+\s)+')
 findPeriodoApuracao=re.compile(r'CADASTRAL \d{2}\/\d{2}\/\d{4}')

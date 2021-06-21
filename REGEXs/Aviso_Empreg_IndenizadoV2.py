@@ -1,4 +1,5 @@
 import re
+from _removeMask import numberWithoutMask
 findCnpj = re.compile(r'\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
 findNome = re.compile(r'Sr\. (\w+\s)+')
 findNisInteresado = re.compile(r'\d{3}.\d{5}.\d{2}-\d')
@@ -36,12 +37,7 @@ def regex_empreg_indenizadoV2(contra_cheque, obj_response):
         obj_response["Tipo"]="42"
         obj_response["NomeInteressado"]=findNome.search(contra_cheque).group().replace("Sr. ","")
         obj_response["NisInteressado"]=findNisInteresado.search(contra_cheque).group()
-        cnpj = findCnpj.search(contra_cheque).group()
-        cnpjNum=""
-        for ch in cnpj:
-            if ch.isdigit():
-                cnpjNum += ch
-        obj_response["Cnpj"]=cnpjNum
+        obj_response["Cnpj"]=numberWithoutMask(findCnpj.search(contra_cheque).group())
         # Mes, de, ano = findCompetencia.search(contra_cheque).group().split(" ")
         # obj_response["Mes"]=Mes_ext[Mes]
         # obj_response["Ano"]=ano

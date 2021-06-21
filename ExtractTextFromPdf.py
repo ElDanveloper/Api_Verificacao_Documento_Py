@@ -17,6 +17,10 @@ class Error(Exception):
 class PdfComSenha(Error):
     """Raised when the input value is too small"""
     pass
+
+class FalhaNaLeituraPdf(Error):
+    """Raised when the input value is too small"""
+    pass
     
 class Extract_text:
 
@@ -46,6 +50,7 @@ class Extract_text:
             fullText=fullText+text
             os.remove("page_"+str(i)+".jpg")
         return fullText
+
     def teste_pdf_miner(self,local_pdf_filename):
         self.local_pdf_filename = local_pdf_filename
         with open(self.local_pdf_filename, "rb") as pdf_file:
@@ -57,8 +62,10 @@ class Extract_text:
                 extracted_text=self.__test_pdf_image()
         except pdfminer.pdfdocument.PDFPasswordIncorrect as e:
             extracted_text=""
-            # raise PdfComSenhaException('Pdf enviado contém senha')
-        return extracted_text,encoded_string.decode('ascii'),self.local_pdf_filename 
+        except:
+            raise FalhaNaLeituraPdf()
+        return extracted_text,encoded_string.decode('ascii'),self.local_pdf_filename
+
     def docx_file(self,local_pdf_filename):
         self.local_pdf_filename = local_pdf_filename
         doc = docx.Document(self.local_pdf_filename)
@@ -68,6 +75,7 @@ class Extract_text:
         for para in doc.paragraphs:
             fullText.append(para.text)
         return '\n'.join(fullText),encoded_string.decode('ascii'),self.local_pdf_filename
+
     def txt_file(self,local_pdf_filename):
         self.local_pdf_filename = local_pdf_filename
         with open(self.local_pdf_filename, "rb") as pdf_file:
@@ -75,12 +83,13 @@ class Extract_text:
         txt = Path(self.local_pdf_filename).read_text(errors="ignore").replace('\n','')
         print(str(txt))
         return txt,encoded_string.decode('ascii'),self.local_pdf_filename
+        
     def unknown_file(self,local_pdf_filename):
         self.local_pdf_filename = local_pdf_filename
         with open(self.local_pdf_filename, "rb") as pdf_file:
             encoded_string = base64.b64encode(pdf_file.read())
         return "",encoded_string.decode('ascii'),self.local_pdf_filename
 if __name__ == "__main__":
-    pdf_data,arquivo,file_name=Extract_text().teste_pdf_miner(r"C:\Daniel Dourado\REGEX-Python\Daniel\Expressoes Regulares\DOCUMENTOS GMAIL 5\38 - GUIA DARF COFINS EXCELÊNCIA - 042021.pdf")
+    pdf_data,arquivo,file_name=Extract_text().teste_pdf_miner(r"C:\Users\danie\Downloads\kit admissao  cod 100.PDF")
     print(pdf_data)
     # print(Extract_text(r"C:/Daniel Dourado/REGEX-Python/Daniel/Expressoes Regulares/Doc Prioridade/CONTRA_CHEQUE_DOMINIO.pdf").teste_pdf_miner())

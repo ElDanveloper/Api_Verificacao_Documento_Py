@@ -1,9 +1,10 @@
+from _removeMask import numberWithoutMask
 import re
 findCpfCnpj = re.compile(r'\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
 findCpf = re.compile(r'\d{3}.\d{3}.\d{3}-\d{2}')
-findTotalARecolher = re.compile(r'Valor Total do Documento\n\n\d+(,\d+)?')
+findTotalARecolher = re.compile(r'Valor Total do Documento\n\n.+')
 findValidade = re.compile(r'Pagar este documento até\n\n\d{2}\/\d{2}\/\d{4}')
-findCompetencia_eSocial = re.compile(r'[A-Za-z]+\/\d{4}')
+findCompetencia_eSocial = re.compile(r'.+\/\d{4}$')
 # findCodigoReceita = re.compile(r'Observações\n\n(...)+')
 findCodigodeBarras = re.compile(r'(\d{11} \d\n\n){4}')
 
@@ -30,12 +31,7 @@ def regex_das(contra_cheque, obj_response):
         else:
             obj_response["Nome"]="DAS"
             obj_response["Tipo"]="57"
-        cnpj = findCpfCnpj.search(contra_cheque).group()
-        cnpjNum=""
-        for ch in cnpj:
-            if ch.isdigit():
-                cnpjNum += ch
-        obj_response["Cnpj"]=cnpjNum
+        obj_response["Cnpj"]=numberWithoutMask(findCpfCnpj.search(contra_cheque).group())
         try:
             cpf = findCpf.search(contra_cheque).group()
             cpfNum=""
@@ -46,6 +42,7 @@ def regex_das(contra_cheque, obj_response):
         except:
             pass
         mes,ano=findCompetencia_eSocial.search(contra_cheque).group().split(("/"))
+        print(mes,ano)
         obj_response["Mes"]=Mes_ext[mes]
         obj_response["Ano"]=ano
         DD,MM,AA=findValidade.search(contra_cheque).group().split('\n')[2].split('/')

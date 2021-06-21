@@ -1,4 +1,5 @@
 import re
+from _removeMask import numberWithoutMask
 findCnpj = re.compile(r'\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}\n')
 findCpf= re.compile(r'\d{3}.\d{3}.\d{3}.\d{2}')
 findNomeInteressado = re.compile(r'Empregado: [\w\d\s]+- (\w+\s)+')
@@ -26,12 +27,7 @@ def regex_recibo_ferias(contra_cheque, obj_response):
         obj_response["CpfCnpjInteressado"]=findCpf.search(contra_cheque).group()
         obj_response["NomeInteressado"]=findNomeInteressado.search(contra_cheque).group().split("-")[1].replace("\n","")
         obj_response["Tipo"]="18"
-        cnpj = findCnpj.search(contra_cheque).group()
-        cnpjNum=""
-        for ch in cnpj:
-            if ch.isdigit():
-                cnpjNum += ch
-        obj_response["Cnpj"]=cnpjNum
+        obj_response["Cnpj"]=numberWithoutMask(findCnpj.search(contra_cheque).group())
         Mes, de, ano = findCompetencia.search(contra_cheque).group().split(" ")
         obj_response["Mes"]=Mes_ext[Mes]
         obj_response["Ano"]=ano

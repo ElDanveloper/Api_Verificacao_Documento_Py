@@ -1,4 +1,5 @@
 import re
+from _removeMask import numberWithoutMask
 findCnpj = re.compile(r'\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
 findCpf = re.compile(r'\d{3}.\d{3}.\d{3}-\d{2}')
 findNisInteresado = re.compile(r'\d{3}.\d{5}.\d{2}-\d')
@@ -11,12 +12,7 @@ def regex_termo_rescisao_verso(contra_cheque, obj_response):
         obj_response["NomeInteressado"] = findNome.search(contra_cheque).group().split('\n')[1]
         obj_response["CpfCnpjInteressado"] = findCpf.search(contra_cheque).group()
         obj_response["Tipo"]="53"
-        cnpj = findCnpj.search(contra_cheque).group()
-        cnpjNum=""
-        for ch in cnpj:
-            if ch.isdigit():
-                cnpjNum += ch
-        obj_response["Cnpj"]=cnpjNum
+        obj_response["Cnpj"]=numberWithoutMask(findCnpj.search(contra_cheque).group())
         obj_response["NisInteressado"]=findNisInteresado.search(contra_cheque).group()
         DD,MM,AA=findCompetencia.search(contra_cheque).group().split('\n')[1].split('/')
         obj_response["Mes"]=MM

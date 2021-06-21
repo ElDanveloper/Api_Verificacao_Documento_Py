@@ -1,5 +1,5 @@
 import sys
-sys.path.append('./REGEXs/')
+sys.path.append('.\\REGEXs\\')
 def find_type_file(pdf_data,arquivo,file_name):
     obj_response = {
     "Id": 0,
@@ -24,6 +24,7 @@ def find_type_file(pdf_data,arquivo,file_name):
     "Juros": 0,
     "Multa": 0,
     "Total": 0,
+    "CodigoBanco":"",
     "Vencimento": "",
     "Arquivo":str(arquivo),
     "Empresa": "",
@@ -68,7 +69,12 @@ def find_type_file(pdf_data,arquivo,file_name):
     from CertificadoRegularidadeFGTS import regex_certificadoRegFGTS
     from ProgramacaoFerias import regexProgramacaoFerias
     from RelatorioReembolso import regex_relatorioReembolso
+    from SituacaoFiscal import regex_situacao_fiscal
+    from ComprovanteArrecadacaoDARF import regex_compArrecDARF
+    from ComprovanteArrecadacaoDAS import regex_compArrecDAS
+    from Kit_Admissao import regex_kit_admissao
     from Generic_file import regex_generic
+    
     
     try:
         if regex_contra_cheque(pdf_data,obj_response) is not None:
@@ -147,6 +153,14 @@ def find_type_file(pdf_data,arquivo,file_name):
             obj_response=regexProgramacaoFerias(pdf_data,obj_response)
         elif regex_relatorioReembolso(pdf_data,obj_response) is not None:
             obj_response=regex_relatorioReembolso(pdf_data,obj_response)
+        elif regex_situacao_fiscal(pdf_data,obj_response) is not None:
+            obj_response=regex_situacao_fiscal(pdf_data,obj_response)
+        elif regex_compArrecDARF(pdf_data,obj_response) is not None:
+            obj_response=regex_compArrecDARF(pdf_data,obj_response)
+        elif regex_compArrecDAS(pdf_data,obj_response) is not None:
+            obj_response=regex_compArrecDAS(pdf_data,obj_response)
+        elif regex_kit_admissao(pdf_data,obj_response) is not None:
+            obj_response=regex_kit_admissao(pdf_data,obj_response)
         else:
             obj_response=regex_generic(pdf_data,obj_response)
     except AttributeError:

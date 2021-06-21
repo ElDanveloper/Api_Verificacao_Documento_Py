@@ -1,4 +1,5 @@
 import re
+from _removeMask import numberWithoutMask
 findCpfCnpj = re.compile(r'\d{3}.\d{3}.\d{3}-\d{2}|\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
 findPeriodoApuracao = re.compile(r'Periodo de Apuracao\n\n\d{2}\/\d{2}\/\d{4}|VALOR TOTAL\n\n\d{2}\/\d{2}\/\d{4}')
 findCodigoReceita = re.compile(r'^\d{4}$',flags=re.MULTILINE)
@@ -8,7 +9,7 @@ findTotalARecolher = re.compile(r'\d+\.\d+,\d+')
 findCodigoBarras = re.compile(r'(\d{11}-\d    ){3}\d{11}-\d')
 
 def regex_darf(contra_cheque, obj_response):
-    if re.search(r'DARF',contra_cheque) is not None: 
+    if re.search(r'DARF',contra_cheque) is not None and re.search(r'Documento de Arrecadação de Receitas Federais',contra_cheque) is not None: 
         obj_response["Nome"]="DARF"
         obj_response["Tipo"]="55"
         obj_response["CodigoReceita"] = findCodigoReceita.search(contra_cheque).group()
@@ -17,7 +18,7 @@ def regex_darf(contra_cheque, obj_response):
         for ch in cnpj:
             if ch.isdigit():
                 cnpjNum += ch
-        obj_response["CpfCnpjInteressado"]=cnpjNum
+        obj_response["Cnpj"]=cnpjNum
         dia,Mes,ano = findPeriodoApuracao.search(contra_cheque).group().split("\n")[2].split("/")
         obj_response["Mes"]=Mes
         obj_response["Ano"]=ano

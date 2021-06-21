@@ -1,4 +1,5 @@
 import re
+from _removeMask import numberWithoutMask
 findCpf= re.compile(r'\d{3}.\d{3}.\d{3}-\d{2}')
 findAno = re.compile(r'EXERCÍCIO \d{4}')
 findNome = re.compile(r'Sr\(a\) (\w+\s?)+')
