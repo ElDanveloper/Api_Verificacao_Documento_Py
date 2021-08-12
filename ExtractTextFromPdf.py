@@ -8,7 +8,7 @@ import pdfminer
 import base64
 import docx
 from pathlib import Path
-
+import unidecode
 class Error(Exception):
     """Base class for other exceptions"""
     pass
@@ -50,6 +50,23 @@ class Extract_text:
             fullText=fullText+text
             os.remove("page_"+str(i)+".jpg")
         return fullText
+
+    def pdf_miner(self,filename):
+        self.pdf_filename = filename
+        # Abre e lê o arquivo
+        with open(self.pdf_filename, "rb") as pdf_file:
+            encoded_string = base64.b64encode(pdf_file.read())
+        try:
+            extracted_text = high_level.extract_text(self.pdf_filename, "")
+            # Caso o retorno seja algum dos abaixo, o PDF é um PDF Imagem
+            if extracted_text in {'', '♀'} or extracted_text.__contains__("(cid:"):
+                extracted_text=self.__test_pdf_image()
+        except pdfminer.pdfdocument.PDFPasswordIncorrect as e:
+            extracted_text=""
+        except:
+            raise FalhaNaLeituraPdf()
+        extracted_text = unidecode.unidecode(extracted_text)
+        return extracted_text,encoded_string.decode('ascii'),self.pdf_filename
 
     def teste_pdf_miner(self,local_pdf_filename):
         self.local_pdf_filename = local_pdf_filename

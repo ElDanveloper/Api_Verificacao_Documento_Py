@@ -9,6 +9,17 @@ CORS(app)
 uploads_dir = os.path.join('uploads')
 os.makedirs(uploads_dir, exist_ok=True)
 
+@app.route("/boleto-proprio", methods=["POST"])
+def route_boleto_proprio():
+    try:
+        file = request.files["file"]
+        path = os.path.join(uploads_dir, secure_filename(file.filename))
+        file.save(path)
+        from BoletoProprio import main
+        res = main(path, request.headers.get("Authorization"))
+        return res
+    except Exception as e: return str(e)
+
 @app.route("/receiveFile", methods=["POST"])
 def receiveFile():
     files = request.files.getlist("file")
