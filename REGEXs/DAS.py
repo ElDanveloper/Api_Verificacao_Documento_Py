@@ -28,9 +28,12 @@ def regex_das(contra_cheque, obj_response):
         if re.search(r'Documento de Arrecadação do eSocial',contra_cheque) is not None:
             obj_response["Nome"]="DAS-Domestico eSocial"
             obj_response["Tipo"]="41"
-        elif (re.search(r'PARCSN',contra_cheque) is not None) or (re.search(r'REC.DIVIDA ATIVA',contra_cheque) is not None):
+        elif (re.search(r'PARCSN',contra_cheque) is not None):
             obj_response["Nome"]="DAS PARCELAMENTO"
             obj_response["Tipo"]="84"
+        elif (re.search(r'REC.DIVIDA ATIVA',contra_cheque) is not None):
+            obj_response["Nome"]="Das SIMPLES PGFN"
+            obj_response["Tipo"]="101"
         else:
             obj_response["Nome"]="DAS"
             obj_response["Tipo"]="57"
