@@ -16,16 +16,14 @@ def sendObject(obj, token,file_name):
             "data":""
         }
     if type(response) == dict:
-        f = open("./DeramErro/"+file_name.split("/")[2][:-4].replace(".","")+".txt", "w")
-        f.write(json.dumps(obj))
-        f.write("\n\n"+str(response))
+        with open("./DeramErro/"+file_name.split("/")[2][:-4].replace(".","")+".json", 'w', encoding='utf-8') as f:
+            json.dump(obj, f, ensure_ascii=False, indent=4)
         #buildPdf(response["Nome"],obj["Arquivo"])
         resposta["msg"]="O arquivo do tipo "+obj["Nome"]+" foi lido e enviado com sucesso!",
         resposta["data"]=response
     else:
-        f = open("./DeramErro/"+file_name.split("/")[2][:-4].replace(".","")+".txt", "w")
-        f.write(json.dumps(obj))
-        f.write("\n\n"+response)
+        with open("./DeramErro/"+file_name.split("/")[2][:-4].replace(".","")+".json", 'w', encoding='utf-8') as f:
+            json.dump(obj, f, ensure_ascii=False, indent=4)
         resposta["msg"]="O arquivo não foi reconhecido",
         resposta["Sucess"]=False
     os.remove(file_name)
