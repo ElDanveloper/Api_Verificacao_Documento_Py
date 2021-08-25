@@ -1,6 +1,9 @@
 import sys
 import os
 import json
+
+from base_url import get_base_url
+
 def find_regex(pdf_data,arquivo,file_name,token):
     from DiscoverTypeFile import find_type_file
     obj_response=find_type_file(pdf_data,arquivo,file_name)
@@ -9,7 +12,7 @@ def find_regex(pdf_data,arquivo,file_name,token):
 def sendObject(obj, token,file_name):
     from SendRequests import sendRequest
     from writeB64 import buildPdf
-    response = sendRequest(obj,"http://75.119.134.38:2004/dp/hunnodev/file/ProcessaGenericDoc",token)
+    response = sendRequest(obj, get_base_url() + "ProcessaGenericDoc",token)
     resposta = {
             "Sucess":True,
             "msg":"",

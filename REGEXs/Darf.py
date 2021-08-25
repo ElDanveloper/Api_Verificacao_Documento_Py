@@ -9,8 +9,6 @@ findDarfAntigoCodigoBarras = re.compile(r'(\d{11}-\d    ){3}\d{11}-\d')
 
 def regex_darf(contra_cheque, obj_response):
     if re.search(r'Documento de Arrecadação de Receitas Federais',contra_cheque) is not None:
-        with open("darf.txt", "w") as f:
-            f.write(contra_cheque)
         if re.search(r'DARF',contra_cheque) is not None: 
             obj_response["Nome"]="DARF"
             obj_response["Tipo"]="55"
@@ -21,10 +19,12 @@ def regex_darf(contra_cheque, obj_response):
                 if ch.isdigit():
                     cnpjNum += ch
             obj_response["Cnpj"]=cnpjNum
-            dia,Mes,ano = findDarfAntigoPeriodoApuracao.search(contra_cheque).group()[:10].split("/")
-            obj_response["Mes"]=Mes
-            obj_response["Ano"]=ano
-            obj_response["PeriodoApuracao"]=ano+"-"+Mes+"-"+dia
+            try:
+                dia,Mes,ano = findDarfAntigoPeriodoApuracao.search(contra_cheque).group()[:10].split("/")
+                obj_response["Mes"]=Mes
+                obj_response["Ano"]=ano
+                obj_response["PeriodoApuracao"]=ano+"-"+Mes+"-"+dia
+            except: pass
             DD,MM,AA=findDarfAntigoValidade.search(contra_cheque).group().split(' ')[1].split('/')
             obj_response["Vencimento"]=AA+"-"+MM+"-"+DD
             valorTotal = findDarfAntigoTotalARecolher.search(contra_cheque).group()
@@ -61,30 +61,30 @@ def regex_darf(contra_cheque, obj_response):
             obj_response["CodigoBarras"]= findDarfWebCodigoBarra.search(contra_cheque).group().replace(" ","").replace("\n","")
             return obj_response
 
-        elif re.search(r'CNO', contra_cheque) is not None:
-            regexVencimento = re.compile(r'Vencimento: \d{2}\/\d{2}\/\d{4}')
-            regexCodigoReceita = re.compile(r'Numero: \d{2}[\.]\d{2}[\.]\d{5}[\.]\d{7}[-]\d')
-            regexCnpj = re.compile(r'\d{3}.\d{3}.\d{3}-\d{2}|\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
-            regexCompetencia = re.compile(r'PA:\d{2}[\/]\d{4}')
-            regexValorTotal = re.compile(r'Valor: \d+\.\d+,\d+')
-            regexBoleto = re.compile(r'(\d{11} \d{1}( |\n)){4}')
+    elif re.search(r'CNO', contra_cheque) is not None:
+        regexVencimento = re.compile(r'Vencimento: \d{2}\/\d{2}\/\d{4}')
+        regexCodigoReceita = re.compile(r'Numero: \d{2}[\.]\d{2}[\.]\d{5}[\.]\d{7}[-]\d')
+        regexCnpj = re.compile(r'\d{3}.\d{3}.\d{3}-\d{2}|\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
+        regexCompetencia = re.compile(r'PA:\d{2}[\/]\d{4}')
+        regexValorTotal = re.compile(r'Valor: \d+\.\d+,\d+')
+        regexBoleto = re.compile(r'(\d{11} \d{1}( |\n)){4}')
 
-            obj_response["Nome"] = "CNO"
-            obj_response["Tipo"] = "551"
+        obj_response["Nome"] = "Darf CNO"
+        obj_response["Tipo"] = "102"
 
-            DD,MM,AA = regexVencimento.search(contra_cheque).group().split(' ')[1].split('/')
-            obj_response["Vencimento"] = AA+"-"+MM+"-"+DD
-            obj_response["CodigoReceita"] = regexCodigoReceita.search(contra_cheque).group().split(' ')[1].replace('.','').replace('-','')
-            obj_response["Cnpj"] = regexCnpj.search(contra_cheque).group().replace('.','').replace('/','').replace('-','')
-            mes,ano = regexCompetencia.search(contra_cheque).group().replace("PA:",'').split("/")
+        DD,MM,AA = regexVencimento.search(contra_cheque).group().split(' ')[1].split('/')
+        obj_response["Vencimento"] = AA+"-"+MM+"-"+DD
+        obj_response["CodigoReceita"] = regexCodigoReceita.search(contra_cheque).group().split(' ')[1].replace('.','').replace('-','')
+        obj_response["Cnpj"] = regexCnpj.search(contra_cheque).group().replace('.','').replace('/','').replace('-','')
+        mes,ano = regexCompetencia.search(contra_cheque).group().replace("PA:",'').split("/")
 
-            obj_response["Mes"] = mes
-            obj_response["Ano"] = ano
+        obj_response["Mes"] = mes
+        obj_response["Ano"] = ano
 
-            obj_response["PeriodoApuracao"] = ano+"-"+mes
-            obj_response["Total"] = regexValorTotal.search(contra_cheque).group().split(' ')[1].replace('.','').replace(',','.')
-            obj_response["CodigoBarras"] = regexBoleto.search(contra_cheque).group().replace(' ','').replace('\n','')
-            return obj_response
+        obj_response["PeriodoApuracao"] = ano+"-"+mes+'-01'
+        obj_response["Total"] = regexValorTotal.search(contra_cheque).group().split(' ')[1].replace('.',',').replace(',','')
+        obj_response["CodigoBarras"] = regexBoleto.search(contra_cheque).group().replace(' ','').replace('\n','')
+        return obj_response
 
             
     return None
