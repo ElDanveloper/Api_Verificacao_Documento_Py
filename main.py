@@ -9,7 +9,7 @@ def find_regex(pdf_data,arquivo,file_name,token):
 def sendObject(obj, token,file_name):
     from SendRequests import sendRequest
     from writeB64 import buildPdf
-    response = sendRequest(obj,"http://75.119.134.38:2004/dp/hunnodev/file/ProcessaGenericDoc",token)
+    response = sendRequest(obj,"http://75.119.134.38:2004/dp/hunno/file/ProcessaGenericDoc",token)
     resposta = {
             "Sucess":True,
             "msg":"",

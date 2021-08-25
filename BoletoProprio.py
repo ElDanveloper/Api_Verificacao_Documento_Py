@@ -8,7 +8,7 @@ from convertPDFtoBase64 import pdf_to_base64
 import requests
 import re
 
-ROTA_API_HUNNO_DEV = 'http://75.119.134.38:2004/dp/hunnodev/file/boletoproprio'
+ROTA_API_HUNNO_DEV = 'http://75.119.134.38:2004/dp/hunno/file/boletoproprio'
 
 def populate(pdf_data, modelo, filename):
   findCodigoBarras = re.compile(r'\d{5}.\d{5} \d{5}.\d{6} \d{5}.\d{6} \d{1} \d{14}')
@@ -54,5 +54,5 @@ if __name__ == "__main__":
     teste = main("X:\\samue\\Projetos\\Pollo C\\toqweb-python\\uploads\\F B SUPERMECADO LTDA-00190000090321583700001948576176287050000079600.pdf")
     
     # import requests
-    # response = requests.post('http://75.119.134.38:2004/dp/hunnodev/file/boletoproprio', json=teste)    
+    # response = requests.post('http://75.119.134.38:2004/dp/hunno/file/boletoproprio', json=teste)    
     # print(response)
