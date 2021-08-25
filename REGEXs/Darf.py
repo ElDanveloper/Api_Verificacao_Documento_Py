@@ -19,10 +19,12 @@ def regex_darf(contra_cheque, obj_response):
                 if ch.isdigit():
                     cnpjNum += ch
             obj_response["Cnpj"]=cnpjNum
-            # dia,Mes,ano = findDarfAntigoPeriodoApuracao.search(contra_cheque).group()[:10].split("/")
-            # obj_response["Mes"]=Mes
-            # obj_response["Ano"]=ano
-            # obj_response["PeriodoApuracao"]=ano+"-"+Mes+"-"+dia
+            try:
+                dia,Mes,ano = findDarfAntigoPeriodoApuracao.search(contra_cheque).group()[:10].split("/")
+                obj_response["Mes"]=Mes
+                obj_response["Ano"]=ano
+                obj_response["PeriodoApuracao"]=ano+"-"+Mes+"-"+dia
+            except: pass
             DD,MM,AA=findDarfAntigoValidade.search(contra_cheque).group().split(' ')[1].split('/')
             obj_response["Vencimento"]=AA+"-"+MM+"-"+DD
             valorTotal = findDarfAntigoTotalARecolher.search(contra_cheque).group()
