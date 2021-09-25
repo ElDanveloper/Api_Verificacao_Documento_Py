@@ -1,11 +1,15 @@
 from flask import Flask, request
+import flask
 from flask_cors import CORS
 import os
 from werkzeug.utils import secure_filename
 import jwt
 from threading import Thread
-app = Flask("VerificacaoDocumento")
+
+app = flask.Flask(__name__)
+app.config['DEBUG'] = True
 CORS(app)
+
 uploads_dir = os.path.join('uploads')
 os.makedirs(uploads_dir, exist_ok=True)
 
@@ -45,6 +49,7 @@ def receiveFiles():
             "data":""
         }
     return resposta
+
 @app.route("/sendFiles", methods=["GET"])
 def sendFiles():
     from main import main
@@ -52,7 +57,10 @@ def sendFiles():
     data=jwt.decode(token, options={"verify_signature": False})
     res=main('uploads2/'+data["cpf_cnpj"]+"/",request.headers.get("Authorization"))
     return res
+
 @app.route("/", methods=["GET"])
 def get():
-    return "Olá mundo"
-app.run(host='0.0.0.0',port=3100)
+    return "Olá mundo" 
+
+if __name__ =="__main__":
+    app.run(host='0.0.0.0',port=5000)
