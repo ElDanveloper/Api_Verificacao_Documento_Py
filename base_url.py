@@ -2,7 +2,7 @@ def get_base_url():
     '''
     Retorna a URL base da API de marcio, a depender do ambiente.\n
     Desenvolvimento: http://75.119.134.38:2004/dp/hunnodev/file/\n
-    Produção: https://api.huuno.com.br:2004/dp/hunno/
+    Produção: https://api.hunno.com.br:2004/dp/hunno/file/
     '''
     import os
     from dotenv import load_dotenv

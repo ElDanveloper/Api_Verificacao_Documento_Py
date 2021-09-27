@@ -1,6 +1,7 @@
 import requests
 
-def sendRequest(body,url,token):
+
+def sendRequest(body, url, token):
     # values = {
     # "email": "contato@leandroreboucas.com",
     # "password": "041050"
@@ -13,12 +14,11 @@ def sendRequest(body,url,token):
     headers = {
         'Authorization': '{}'.format(token)
     }
-    responseApi = requests.post(url=url,json=body,headers=headers)
+    responseApi = requests.post(url=url, json=body, headers=headers)
 
-    if responseApi.status_code >=200 and responseApi.status_code <=299:
+    if responseApi.status_code >= 200 and responseApi.status_code <= 299:
         return responseApi.json()
     else:
         print(responseApi.status_code)
         print(responseApi.text)
         return responseApi.text
-
