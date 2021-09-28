@@ -1,5 +1,5 @@
 import re
-from _removeMask import numberWithoutMask
+from REGEXs._removeMask import numberWithoutMask
 findCpf= re.compile(r'\d{3}.\d{3}.\d{3}-\d{2}')
 
 def regex_Irpf(contra_cheque, obj_response):

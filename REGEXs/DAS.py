@@ -1,4 +1,4 @@
-from _removeMask import numberWithoutMask
+from REGEXs._removeMask import numberWithoutMask
 import re
 findCpfCnpj = re.compile(r'\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
 findCpf = re.compile(r'\d{3}.\d{3}.\d{3}-\d{2}')

@@ -1,5 +1,5 @@
 import re
-from _removeMask import numberWithoutMask
+from REGEXs._removeMask import numberWithoutMask
 findCnpj = re.compile(r'\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
 findNome = re.compile(r'Sr.\(a\) (\w+\s)+',flags=re.MULTILINE)
 findDataAdmissao = re.compile(r'Data de Admissão\n\d{2}\/\d{2}\/\d{4}')

@@ -1,6 +1,6 @@
 import re
-from _removeMask import numberWithoutMask
-from _findCodBank import returnCodBank
+from REGEXs._removeMask import numberWithoutMask
+from REGEXs._findCodBank import returnCodBank
 findCnpj = re.compile(r'\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
 findcompetenciaVencimento = re.compile(r'\d{2}\/\d{4}\n\n\d{2}\/\d{2}\/\d{4}')
 findValorPago = re.compile(r'Total\n\d+(,?\d+)')

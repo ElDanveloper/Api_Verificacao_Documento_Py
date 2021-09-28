@@ -1,5 +1,5 @@
 import re
-from _removeMask import numberWithoutMask
+from REGEXs._removeMask import numberWithoutMask
 findCompetencia= re.compile(r'^\d{4}\/\d{2}',flags=re.MULTILINE)
 findCpfCnpj = re.compile(r'\d{3}.\d{3}.\d{3}-\d{2}|\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
 findNomeInteressado = re.compile(r'Razao Social Vencimento\n\n(\w+\s)+')

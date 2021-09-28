@@ -1,5 +1,5 @@
 import re
-from _removeMask import numberWithoutMask
+from REGEXs._removeMask import numberWithoutMask
 findCnpj = re.compile(r'Inscrição: (\d+)')
 findAno = re.compile(r'Exercício (\d{4})')
 findCompetencia= re.compile(r': (\d{2}\/\d{4})',flags=re.MULTILINE)

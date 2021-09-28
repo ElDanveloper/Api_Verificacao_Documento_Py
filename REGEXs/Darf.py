@@ -1,5 +1,5 @@
 import re
-from _removeMask import numberWithoutMask
+from REGEXs._removeMask import numberWithoutMask
 findDarfCpfCnpj = re.compile(r'\d{3}.\d{3}.\d{3}-\d{2}|\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
 findDarfAntigoPeriodoApuracao = re.compile(r'Periodo de Apuracao\n\n\d{2}\/\d{2}\/\d{4}|VALOR TOTAL\n\n\d{2}\/\d{2}\/\d{4}')
 findDarfAntigoCodigoReceita = re.compile(r'^\d{4}$',flags=re.MULTILINE)

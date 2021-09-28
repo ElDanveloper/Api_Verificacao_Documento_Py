@@ -1,5 +1,5 @@
 import re
-from _removeMask import numberWithoutMask
+from REGEXs._removeMask import numberWithoutMask
 findCnpj = re.compile(r'\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
 findPeriodoApuracao = re.compile(r'Informacao obtida em \d{2}\/\d{2}\/\d{4}')
 #nome arquivo, CNPJ

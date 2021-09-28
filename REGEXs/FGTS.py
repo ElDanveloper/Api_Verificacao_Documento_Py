@@ -1,5 +1,5 @@
 import re
-from _removeMask import numberWithoutMask
+from REGEXs._removeMask import numberWithoutMask
 findCnpj = re.compile(r'\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
 findCompetencia= re.compile(r'^\d{2}\/\d{4}',flags=re.MULTILINE)
 findTotalARecolher = re.compile(r'15-TOTAL A RECOLHER\n\n.+')

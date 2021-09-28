@@ -138,3 +138,5 @@ REGEXs/__pycache__/
 /__pycache__
 *.pyc
 *.pdf
+!requirements.txt
+!.env
