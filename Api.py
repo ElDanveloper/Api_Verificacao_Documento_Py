@@ -40,7 +40,6 @@ def receiveFiles():
     uploads_dir2 = os.path.join('uploads2/'+data["cpf_cnpj"])
     os.makedirs(uploads_dir2, exist_ok=True)
     files = request.files.getlist("file")
-    print(files)
     for file in files:
         file.save(os.path.join(uploads_dir2, secure_filename(file.filename)))
     resposta = {
