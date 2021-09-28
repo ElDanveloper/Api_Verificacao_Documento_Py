@@ -12,10 +12,7 @@ def find_regex(pdf_data, arquivo, file_name, token):
 
 def sendObject(obj, token, file_name):
     from SendRequests import sendRequest
-<<<<<<< HEAD
     print(file_name)
-=======
->>>>>>> deafea94fbfc0602255154e91fb7e8b650c15798
     response = sendRequest(obj, get_base_url()+"ProcessaGenericDoc", token)
     resposta = {
         "Sucess": True,
@@ -23,14 +20,10 @@ def sendObject(obj, token, file_name):
         "data": ""
     }
     if type(response) == dict:
-<<<<<<< HEAD
         print(response)
         path="C:/Users/Administrator/Documents/Api_Verificacao_Documento_Py/Sucesso/"+file_name.split("/")[4][:-4].replace(".", "")+".json"
         print(path)
         with open(path, 'a', encoding='utf-8') as f:
-=======
-        with open("./Sucesso/"+file_name.split("/")[2][:-4].replace(".", "")+".json", 'w', encoding='utf-8') as f:
->>>>>>> deafea94fbfc0602255154e91fb7e8b650c15798
             json.dump(obj, f, ensure_ascii=False, indent=4)
         resposta["msg"] = "O arquivo do tipo " + \
             obj["Nome"]+" foi lido e enviado com sucesso!",
@@ -88,9 +81,4 @@ token = sys.argv[2]
 main(pathToPdfs, token)
 
 if __name__ == "__main__":
-<<<<<<< HEAD
     main("C:/Apps_NodeJS/hunnocrm-api-node/uploads/", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJub21lIjoiTGVhbmRybyBSZWJvdcOnYXMiLCJjcGZfY25waiI6IjA0MTA1MDUzNTgyIiwiY29udHJhY3Rvcl9jbnBqIjoiMTExMTExMTExMTEiLCJpZCI6IjUiLCJwZXJzb25faWQiOiI0ODYiLCJlbWFpbCI6ImNvbnRhdG9AbGVhbmRyb3JlYm91Y2FzLmNvbSIsInBob25lX2NlbGwiOiI3NTk5Mjc0MjgxOSIsInR5cGVfdXNlciI6IkMiLCJwZXJmaWxfdXNlciI6IkQiLCJhY3RpdmUiOnRydWUsInVzZXJfaWRfc3VwZXJ2aXNvciI6IjEiLCJ1c2VyX3Bhc3N3b3JkIjoiJDJhJDEwJG53c2NsRTJaWVlQRUNFZVdJWjFyYk9yZkU5TUEwLnFqTUp6dGlOdVJkOGFNeG1Tcm9lWk9PIiwiZGVwYXJ0bWVudF9pZCI6IjEiLCJzaW1wbGVfbmFtZSI6IkxlYW5kcm8gUmVib3XDp2FzIiwiY2FtaW5ob19mb3RvIjoiaHR0cHM6Ly9maXJlYmFzZXN0b3JhZ2UuZ29vZ2xlYXBpcy5jb20vdjAvYi9odW5uby02ZjM0YS5hcHBzcG90LmNvbS9vLzElMkYxNTY4NjM3MDk5MjMzLTI4MTU3NjE4XzE4NDYxMTk5Mjg3MzM0MzVfMzc1MTk0MjAzOTQ2MjIxNTY4X24uanBnP2FsdD1tZWRpYSIsImNvbnRyYWN0b3IiOltdLCJjbGllbnRzIjpbXSwiaWF0IjoxNjMyNzY3MTk1LCJleHAiOjE2MzI4NTM1OTUsImNvbnRyYWN0b3JfaWQiOiIxIn0.ZhBhuBT8Kx_HfPxjI6ouXAd5g4KhY6x6IaJwEFr8z20")
-=======
-    main("./uploads/",
-         "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJub21lIjoiTWFyY2lvIENvc3RhIFNpbHZhIiwiY3BmX2NucGoiOiI2MDYwMTk4MTU1MyIsImNvbnRyYWN0b3JfaWQiOiIxIiwiY29udHJhY3Rvcl9jbnBqIjoiMTEzNzgwMDQwMDAxMjQiLCJpZCI6IjEiLCJwZXJzb25faWQiOiIzMzEiLCJlbWFpbCI6Im1hcmNpb0Bwb2xsb2NvbnRhYmlsLmNvbS5iciIsInBob25lX2NlbGwiOiI3NTk5MTg2NDY5NiIsInR5cGVfdXNlciI6IkMiLCJwZXJmaWxfdXNlciI6IkQiLCJhY3RpdmUiOnRydWUsInVzZXJfaWRfc3VwZXJ2aXNvciI6IjEiLCJ1c2VyX3Bhc3N3b3JkIjoiJDJhJDEwJDJ6aDZjTHg0WjlkenVFUWVxNHd6Vi56ZzdkTTNEVXBlZ3Rpa0NONDg4bm5ac0RqbjJOUE1PIiwiZGVwYXJ0bWVudF9pZCI6IjciLCJzaW1wbGVfbmFtZSI6Ik3DoXJjaW8gQ29zdGEiLCJjYW1pbmhvX2ZvdG8iOm51bGwsImNvbnRyYWN0b3IiOlt7ImlkIjoiMSIsInBlcnNvbl9pZCI6IjExNyIsIm5vbWUiOiJQT0xMTyBDT05TVUxUT1JJQSBDT05UQUJJTCBFIFNJU1RFTUFTIExUREEiLCJjcGZfY25waiI6IjExMzc4MDA0MDAwMTI0IiwiZG9jX2Zvcm1hdCI6IjExLjM3OC4wMDQvMDAwMS0yNCIsInRpcG9faW5zY3JpY2FvIjpudWxsLCJ0aXBvIjoiRSIsImNhbWluaG9fZm90byI6Imh0dHBzOi8vaS5pbWd1ci5jb20vU1NuaUZvRC5wbmciLCJjcnQiOiIxIiwiY3JjX3N1YnNjcmlwdGlvbiI6IjAxODM5MiIsImVtYWlsIjoibWFyY2lvQHBvbGxjb250YWJpbC5jb20uYnIiLCJ3aGF0c2FwcF9idXNpbmVzcyI6Ijc1OTkxODY0Njk2IiwiaW5zdGFncmFtIjpudWxsLCJmYWNlYm9vayI6bnVsbCwieW91dHViZSI6bnVsbCwibGlua2VkaW4iOm51bGwsImdvb2dsZV9hY2NvdW50IjpudWxsLCJkYXRlX3JlZ2lzdGVyIjoiMjAxOS0wNy0xNFQxNDo1NjoyNC4wMDBaIiwiZGF0ZV9pbml0aWFsX2NvbnRyYWN0IjoiMjAxOS0wNy0xNFQxNDo1NjoyOS4wMDBaIiwiZGF0ZV9sYXN0X2NvbnRyYWN0IjoiMjAxOS0wNy0xNFQxNDo1NjozNC4wMDBaIiwiYWN0aXZlX2NvbnRyYWN0IjpudWxsLCJkZXBhcnRhbWVudG9faWQiOiI3IiwiZGVwYXJ0YW1lbnRvX3VzZXJfcmVzcCI6IjEiLCJkZXBhcnRhbWVudG9fbm9tZSI6IkFkbWluaXN0cmF0aXZvIiwiZGVwYXJ0YW1lbnRvX3RpcG8iOm51bGx9XSwiY2xpZW50cyI6W10sImlhdCI6MTYzMjc0NDMzMywiZXhwIjoxNjMyODMwNzMzfQ.zwCUPUXXaiQ7MPXnAf9n4xPEkt_f9f8C7TaAmU-bA_4")
->>>>>>> deafea94fbfc0602255154e91fb7e8b650c15798

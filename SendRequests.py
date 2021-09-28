@@ -15,10 +15,6 @@ def sendRequest(body, url, token):
     headers = {
         'Authorization': '{}'.format(token)
     }
-<<<<<<< HEAD
-=======
-    print(headers)
->>>>>>> deafea94fbfc0602255154e91fb7e8b650c15798
     responseApi = requests.post(url=url, json=body, headers=headers)
 
     if responseApi.status_code >= 200 and responseApi.status_code <= 299:
