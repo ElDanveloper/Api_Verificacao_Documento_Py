@@ -21,7 +21,7 @@ def sendObject(obj, token, file_name):
     }
     if type(response) == dict:
         print(response)
-        path="./Sucesso/"+file_name.split("/")[2][:-4].replace(".", "")+".json"
+        path="C:/Users/Administrator/Documents/Api_Verificacao_Documento_Py/Sucesso/"+file_name.split("/")[4][:-4].replace(".", "")+".json"
         print(path)
         with open(path, 'a', encoding='utf-8') as f:
             json.dump(obj, f, ensure_ascii=False, indent=4)
@@ -29,7 +29,7 @@ def sendObject(obj, token, file_name):
             obj["Nome"]+" foi lido e enviado com sucesso!",
         resposta["data"] = response
     else:
-        with open("./DeramErro/"+file_name.split("/")[2][:-4].replace(".", "")+".json", 'a', encoding='utf-8') as f:
+        with open("C:/Users/Administrator/Documents/Api_Verificacao_Documento_Py/DeramErro/"+file_name.split("/")[4][:-4].replace(".", "")+".json", 'a', encoding='utf-8') as f:
             json.dump(obj, f, ensure_ascii=False, indent=4)
         resposta["msg"] = "O arquivo não foi reconhecido",
         resposta["Sucess"] = False
