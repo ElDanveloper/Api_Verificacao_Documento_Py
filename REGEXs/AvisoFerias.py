@@ -1,5 +1,5 @@
 import re
-from _removeMask import numberWithoutMask
+from REGEXs._removeMask import numberWithoutMask
 findNomeInteressado = re.compile(r'Sr.: (\w+\s)+')
 
 def regex_AvisoFerias(contra_cheque, obj_response):
