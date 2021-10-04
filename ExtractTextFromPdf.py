@@ -36,10 +36,8 @@ class Extract_text:
 
     def __test_pdf_image(self):
         pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-        #pages = convert_from_path(self.local_pdf_filename,poppler_path=r'C:\Daniel Dourado\REGEX-Python\Daniel\Expressoes Regulares\API_Verificacao_Documento\Dependences\poppler-0.68.0\bin')
-        # pages = convert_from_path(self.local_pdf_filename,poppler_path="C:\\Daniel Dourado\\REGEX-Python\\Daniel\\Expressoes Regulares\\API_Verificacao_Documento"+"\\Dependences\\poppler-0.68.0\\bin")
-        pages = convert_from_path(self.local_pdf_filename, poppler_path=os.getcwd(
-        )+"\\Dependences\\poppler-0.68.0\\bin")
+        pages = convert_from_path(
+            self.local_pdf_filename, poppler_path="C:/Users/carlo/Documents/api-toqweb/Dependences/poppler-21.09.0/Library/bin")
 
         image_counter = 1
         for page in pages:

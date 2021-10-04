@@ -10,10 +10,12 @@ def get_base_url():
 
     ROTA_API_HUNNO = os.getenv('ROTA_API_HUNNO')
     if ROTA_API_HUNNO is None:
-        raise Exception(
-            'Crie uma variavel de ambiente, para a ROTA_API_HUNNO, dica:\nDesenvolvimento: https://api.huuno.com.br:2004/dp/hunno/')
+        raise Exception('Crie uma variavel de ambiente, para a ROTA_API_HUNNO, dica: \nDesenvolvimento: https: // api.hunno.com.br: 2004/dp/hunnodev /\n Produção: https: // api.hunno.com.br: 2004/dp/hunno/file /')
     return ROTA_API_HUNNO
 
 
 if __name__ == "__main__":
+    import os
+    os.putenv('ROTA_API_HUNNO',
+              'https://api.hunno.com.br:2004/dp/hunno/file/')
     print(get_base_url())
