@@ -165,7 +165,7 @@ def find_type_file(pdf_data, arquivo, file_name):
         elif regex_kit_admissao(pdf_data, obj_response) is not None:
             obj_response = regex_kit_admissao(pdf_data, obj_response)
         elif regex_gps_web(pdf_data, obj_response) is not None:
-            obj_response - regex_gps_web(pdf_data, obj_response)
+            obj_response = regex_gps_web(pdf_data, obj_response)
         else:
             obj_response = regex_generic(pdf_data, obj_response)
     except AttributeError:
@@ -173,7 +173,7 @@ def find_type_file(pdf_data, arquivo, file_name):
 
     obj_response["Mes"] = int(obj_response["Mes"])
     obj_response["Ano"] = int(obj_response["Ano"])
-    obj_response["Valor"] = int(obj_response["Valor"])
-    obj_response["Multa"] = int(obj_response["Multa"])
-    obj_response["Total"] = int(obj_response["Total"])
+    obj_response["Valor"] = float(obj_response["Valor"].replace(",", "."))
+    obj_response["Juros"] = float(obj_response["Juros"].replace(",", "."))
+    obj_response["Total"] = float(obj_response["Total"].replace(",", "."))
     return obj_response
