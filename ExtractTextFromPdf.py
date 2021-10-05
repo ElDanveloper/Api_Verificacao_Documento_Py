@@ -35,10 +35,9 @@ class Extract_text:
         return self.local_pdf_filename
 
     def __test_pdf_image(self):
-        pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+        pytesseract.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
         pages = convert_from_path(
-            self.local_pdf_filename, poppler_path="C:/Users/carlo/Documents/api-toqweb/Dependences/poppler-21.09.0/Library/bin")
-
+            self.local_pdf_filename, poppler_path="./Dependences/poppler-21.09.0/Library/bin")
         image_counter = 1
         for page in pages:
             filename = "page_"+str(image_counter)+".jpg"
@@ -79,7 +78,6 @@ class Extract_text:
         try:
             extracted_text = high_level.extract_text(
                 self.local_pdf_filename, "")
-            # print(extracted_text)
             if extracted_text == "" or extracted_text.__contains__("(cid:"):
                 extracted_text = self.__test_pdf_image()
         except pdfminer.pdfdocument.PDFPasswordIncorrect as e:
@@ -112,10 +110,3 @@ class Extract_text:
         with open(self.local_pdf_filename, "rb") as pdf_file:
             encoded_string = base64.b64encode(pdf_file.read())
         return "", encoded_string.decode('ascii'), self.local_pdf_filename
-
-
-if __name__ == "__main__":
-    pdf_data, arquivo, file_name = Extract_text().teste_pdf_miner(
-        r"C:\Users\danie\Downloads\kit admissao  cod 100.PDF")
-    print(pdf_data)
-    # print(Extract_text(r"C:/Daniel Dourado/REGEX-Python/Daniel/Expressoes Regulares/Doc Prioridade/CONTRA_CHEQUE_DOMINIO.pdf").teste_pdf_miner())
