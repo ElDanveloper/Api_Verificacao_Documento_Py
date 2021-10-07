@@ -173,7 +173,10 @@ def find_type_file(pdf_data, arquivo, file_name):
 
     obj_response["Mes"] = int(obj_response["Mes"])
     obj_response["Ano"] = int(obj_response["Ano"])
-    obj_response["Valor"] = float(obj_response["Valor"].replace(",", "."))
-    obj_response["Juros"] = float(obj_response["Juros"].replace(",", "."))
-    obj_response["Total"] = float(obj_response["Total"].replace(",", "."))
+    if isinstance(obj_response["Valor"], str):
+        obj_response["Valor"] = float(obj_response["Valor"].replace(",", "."))
+    if isinstance(obj_response["Juros"], str):
+        obj_response["Juros"] = float(obj_response["Juros"].replace(",", "."))
+    if isinstance(obj_response["Total"], str):
+        obj_response["Total"] = float(obj_response["Total"].replace(",", "."))
     return obj_response
