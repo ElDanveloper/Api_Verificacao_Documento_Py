@@ -140,3 +140,11 @@ REGEXs/__pycache__/
 *.pdf
 !requirements.txt
 !.env
+
+DeramErro/*
+Sucesso/*
+uploads/*
+
+!DeramErro/.gitkeep
+!Sucesso/.gitkeep
+!uploads/.gitkeep 
