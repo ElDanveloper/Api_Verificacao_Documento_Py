@@ -1,6 +1,8 @@
 import sys
 sys.path.append('.\\REGEXs\\')
-def find_type_file(pdf_data,arquivo,file_name):
+
+
+def find_type_file(pdf_data, arquivo, file_name):
     obj_response = {
     "Id": 0,
     "ContractorId": 0,
@@ -75,102 +77,106 @@ def find_type_file(pdf_data,arquivo,file_name):
     from REGEXs.Kit_Admissao import regex_kit_admissao
     from REGEXs.Generic_file import regex_generic
     from REGEXs.GPS_WEB import regex_gps_web
-    
     try:
-        if regex_contra_cheque(pdf_data,obj_response) is not None:
-            obj_response=regex_contra_cheque(pdf_data,obj_response)
-        elif regex_folha_pagamento(pdf_data,obj_response) is not None:
-            obj_response=regex_folha_pagamento(pdf_data,obj_response)
-        elif regex_fgts(pdf_data,obj_response) is not None:
-            obj_response=regex_fgts(pdf_data,obj_response)
-        elif regex_gps(pdf_data,obj_response) is not None:
-            obj_response=regex_gps(pdf_data,obj_response)
-        elif regex_dae(pdf_data,obj_response) is not None:
-            obj_response=regex_dae(pdf_data,obj_response)
-        elif regex_re(pdf_data,obj_response) is not None:
-            obj_response=regex_re(pdf_data,obj_response)  
-        elif regex_gfip_rubrica(pdf_data,obj_response) is not None:
-            obj_response=regex_gfip_rubrica(pdf_data,obj_response) 
-        elif regex_compensacao(pdf_data,obj_response) is not None:
-            obj_response=regex_compensacao(pdf_data,obj_response)
-        elif regex_envio_arquivos(pdf_data,obj_response) is not None:
-            obj_response=regex_envio_arquivos(pdf_data,obj_response)
-        elif regex_grrf_relatorio(pdf_data,obj_response) is not None:
-            obj_response=regex_grrf_relatorio(pdf_data,obj_response)
-        elif regex_Irpf(pdf_data,obj_response) is not None:
-            obj_response=regex_Irpf(pdf_data,obj_response)
-        elif regex_renuncia_vale(pdf_data,obj_response) is not None:
-            obj_response=regex_renuncia_vale(pdf_data,obj_response)
-        elif regex_defis(pdf_data,obj_response) is not None:
-            obj_response=regex_defis(pdf_data,obj_response)
-        elif regex_dma_resumo(pdf_data,obj_response) is not None:
-            obj_response=regex_dma_resumo(pdf_data,obj_response)
-        elif regex_dmd_mov(pdf_data,obj_response) is not None:
-            obj_response=regex_dmd_mov(pdf_data,obj_response)
-        elif regex_efd_contribuicoes(pdf_data,obj_response) is not None:
-            obj_response=regex_efd_contribuicoes(pdf_data,obj_response)
-        elif regex_gps_parcelamento(pdf_data,obj_response) is not None:
-            obj_response=regex_gps_parcelamento(pdf_data,obj_response)
-        elif regex_recibo_ferias(pdf_data,obj_response) is not None:
-            obj_response=regex_recibo_ferias(pdf_data,obj_response)
-        elif regex_empreg_indenizado(pdf_data,obj_response) is not None:
-            obj_response=regex_empreg_indenizado(pdf_data,obj_response)
-        elif regex_empreg_indenizadoV2(pdf_data,obj_response) is not None:
-            obj_response=regex_empreg_indenizadoV2(pdf_data,obj_response)
-        elif regex_fgts_chave(pdf_data,obj_response) is not None:
-            obj_response=regex_fgts_chave(pdf_data,obj_response)
-        elif regex_termo_rescisao_frente(pdf_data,obj_response) is not None:
-            obj_response=regex_termo_rescisao_frente(pdf_data,obj_response)
-        elif regex_termo_rescisao_verso(pdf_data,obj_response) is not None:
-            obj_response=regex_termo_rescisao_verso(pdf_data,obj_response)
-        elif regex_relacao_salarios_contribuicao(pdf_data,obj_response) is not None:
-            obj_response=regex_relacao_salarios_contribuicao(pdf_data,obj_response)
-        elif regex_darf(pdf_data,obj_response) is not None:
-            obj_response=regex_darf(pdf_data,obj_response)
-        elif regex_iss(pdf_data,obj_response) is not None:
-            obj_response=regex_iss(pdf_data,obj_response)
-        elif regex_das(pdf_data,obj_response) is not None:
-            obj_response=regex_das(pdf_data,obj_response)
-        elif regex_AvisoFerias(pdf_data,obj_response) is not None:
-            obj_response=regex_AvisoFerias(pdf_data,obj_response)
-        elif regex_CartaReferencia(pdf_data,obj_response) is not None:
-            obj_response=regex_CartaReferencia(pdf_data,obj_response)
-        elif regex_CadNacPessJur(pdf_data,obj_response) is not None:
-            obj_response=regex_CadNacPessJur(pdf_data,obj_response)
-        elif regex_CertidaoFederalCond(pdf_data,obj_response) is not None:
-            obj_response=regex_CertidaoFederalCond(pdf_data,obj_response)
-        elif regexExtratoContFundoGarantFGTS(pdf_data,obj_response) is not None:
-            obj_response=regexExtratoContFundoGarantFGTS(pdf_data,obj_response)
-        elif regex_grrf_fgts(pdf_data,obj_response) is not None:
-            obj_response=regex_grrf_fgts(pdf_data,obj_response)
-        elif regex_req_seguro_desemprego(pdf_data,obj_response) is not None:
-            obj_response=regex_req_seguro_desemprego(pdf_data,obj_response)
-        elif regexExtratoFGTSTrabalhador(pdf_data,obj_response) is not None:
-            obj_response=regexExtratoFGTSTrabalhador(pdf_data,obj_response)
-        elif regex_certificadoRegFGTS(pdf_data,obj_response) is not None:
-            obj_response=regex_certificadoRegFGTS(pdf_data,obj_response)
-        elif regexProgramacaoFerias(pdf_data,obj_response) is not None:
-            obj_response=regexProgramacaoFerias(pdf_data,obj_response)
-        elif regex_relatorioReembolso(pdf_data,obj_response) is not None:
-            obj_response=regex_relatorioReembolso(pdf_data,obj_response)
-        elif regex_situacao_fiscal(pdf_data,obj_response) is not None:
-            obj_response=regex_situacao_fiscal(pdf_data,obj_response)
-        elif regex_compArrecDARF(pdf_data,obj_response) is not None:
-            obj_response=regex_compArrecDARF(pdf_data,obj_response)
-        elif regex_compArrecDAS(pdf_data,obj_response) is not None:
-            obj_response=regex_compArrecDAS(pdf_data,obj_response)
-        elif regex_kit_admissao(pdf_data,obj_response) is not None:
-            obj_response=regex_kit_admissao(pdf_data,obj_response)
+        if regex_contra_cheque(pdf_data, obj_response) is not None:
+            obj_response = regex_contra_cheque(pdf_data, obj_response)
+        elif regex_folha_pagamento(pdf_data, obj_response) is not None:
+            obj_response = regex_folha_pagamento(pdf_data, obj_response)
+        elif regex_fgts(pdf_data, obj_response) is not None:
+            obj_response = regex_fgts(pdf_data, obj_response)
+        elif regex_gps(pdf_data, obj_response) is not None:
+            obj_response = regex_gps(pdf_data, obj_response)
+        elif regex_dae(pdf_data, obj_response) is not None:
+            obj_response = regex_dae(pdf_data, obj_response)
+        elif regex_re(pdf_data, obj_response) is not None:
+            obj_response = regex_re(pdf_data, obj_response)
+        elif regex_gfip_rubrica(pdf_data, obj_response) is not None:
+            obj_response = regex_gfip_rubrica(pdf_data, obj_response)
+        elif regex_compensacao(pdf_data, obj_response) is not None:
+            obj_response = regex_compensacao(pdf_data, obj_response)
+        elif regex_envio_arquivos(pdf_data, obj_response) is not None:
+            obj_response = regex_envio_arquivos(pdf_data, obj_response)
+        elif regex_grrf_relatorio(pdf_data, obj_response) is not None:
+            obj_response = regex_grrf_relatorio(pdf_data, obj_response)
+        elif regex_Irpf(pdf_data, obj_response) is not None:
+            obj_response = regex_Irpf(pdf_data, obj_response)
+        elif regex_renuncia_vale(pdf_data, obj_response) is not None:
+            obj_response = regex_renuncia_vale(pdf_data, obj_response)
+        elif regex_defis(pdf_data, obj_response) is not None:
+            obj_response = regex_defis(pdf_data, obj_response)
+        elif regex_dma_resumo(pdf_data, obj_response) is not None:
+            obj_response = regex_dma_resumo(pdf_data, obj_response)
+        elif regex_dmd_mov(pdf_data, obj_response) is not None:
+            obj_response = regex_dmd_mov(pdf_data, obj_response)
+        elif regex_efd_contribuicoes(pdf_data, obj_response) is not None:
+            obj_response = regex_efd_contribuicoes(pdf_data, obj_response)
+        elif regex_gps_parcelamento(pdf_data, obj_response) is not None:
+            obj_response = regex_gps_parcelamento(pdf_data, obj_response)
+        elif regex_recibo_ferias(pdf_data, obj_response) is not None:
+            obj_response = regex_recibo_ferias(pdf_data, obj_response)
+        elif regex_empreg_indenizado(pdf_data, obj_response) is not None:
+            obj_response = regex_empreg_indenizado(pdf_data, obj_response)
+        elif regex_empreg_indenizadoV2(pdf_data, obj_response) is not None:
+            obj_response = regex_empreg_indenizadoV2(pdf_data, obj_response)
+        elif regex_fgts_chave(pdf_data, obj_response) is not None:
+            obj_response = regex_fgts_chave(pdf_data, obj_response)
+        elif regex_termo_rescisao_frente(pdf_data, obj_response) is not None:
+            obj_response = regex_termo_rescisao_frente(pdf_data, obj_response)
+        elif regex_termo_rescisao_verso(pdf_data, obj_response) is not None:
+            obj_response = regex_termo_rescisao_verso(pdf_data, obj_response)
+        elif regex_relacao_salarios_contribuicao(pdf_data, obj_response) is not None:
+            obj_response = regex_relacao_salarios_contribuicao(
+                pdf_data, obj_response)
+        elif regex_darf(pdf_data, obj_response) is not None:
+            obj_response = regex_darf(pdf_data, obj_response)
+        elif regex_iss(pdf_data, obj_response) is not None:
+            obj_response = regex_iss(pdf_data, obj_response)
+        elif regex_das(pdf_data, obj_response) is not None:
+            obj_response = regex_das(pdf_data, obj_response)
+        elif regex_AvisoFerias(pdf_data, obj_response) is not None:
+            obj_response = regex_AvisoFerias(pdf_data, obj_response)
+        elif regex_CartaReferencia(pdf_data, obj_response) is not None:
+            obj_response = regex_CartaReferencia(pdf_data, obj_response)
+        elif regex_CadNacPessJur(pdf_data, obj_response) is not None:
+            obj_response = regex_CadNacPessJur(pdf_data, obj_response)
+        elif regex_CertidaoFederalCond(pdf_data, obj_response) is not None:
+            obj_response = regex_CertidaoFederalCond(pdf_data, obj_response)
+        elif regexExtratoContFundoGarantFGTS(pdf_data, obj_response) is not None:
+            obj_response = regexExtratoContFundoGarantFGTS(
+                pdf_data, obj_response)
+        elif regex_grrf_fgts(pdf_data, obj_response) is not None:
+            obj_response = regex_grrf_fgts(pdf_data, obj_response)
+        elif regex_req_seguro_desemprego(pdf_data, obj_response) is not None:
+            obj_response = regex_req_seguro_desemprego(pdf_data, obj_response)
+        elif regexExtratoFGTSTrabalhador(pdf_data, obj_response) is not None:
+            obj_response = regexExtratoFGTSTrabalhador(pdf_data, obj_response)
+        elif regex_certificadoRegFGTS(pdf_data, obj_response) is not None:
+            obj_response = regex_certificadoRegFGTS(pdf_data, obj_response)
+        elif regexProgramacaoFerias(pdf_data, obj_response) is not None:
+            obj_response = regexProgramacaoFerias(pdf_data, obj_response)
+        elif regex_relatorioReembolso(pdf_data, obj_response) is not None:
+            obj_response = regex_relatorioReembolso(pdf_data, obj_response)
+        elif regex_situacao_fiscal(pdf_data, obj_response) is not None:
+            obj_response = regex_situacao_fiscal(pdf_data, obj_response)
+        elif regex_compArrecDARF(pdf_data, obj_response) is not None:
+            obj_response = regex_compArrecDARF(pdf_data, obj_response)
+        elif regex_compArrecDAS(pdf_data, obj_response) is not None:
+            obj_response = regex_compArrecDAS(pdf_data, obj_response)
+        elif regex_kit_admissao(pdf_data, obj_response) is not None:
+            obj_response = regex_kit_admissao(pdf_data, obj_response)
         elif regex_gps_web(pdf_data, obj_response) is not None:
-            obj_response - regex_gps_web(pdf_data, obj_response)
+            obj_response = regex_gps_web(pdf_data, obj_response)
         else:
-            obj_response=regex_generic(pdf_data,obj_response)
-    except AttributeError as e:
-        obj_response=regex_generic(pdf_data,obj_response)
-      
-    obj_response["Mes"]=int(obj_response["Mes"])
-    obj_response["Ano"]=int(obj_response["Ano"])
-    obj_response["Valor"]=int(obj_response["Valor"])
-    obj_response["Multa"]=int(obj_response["Multa"])
-    obj_response["Total"]=int(obj_response["Total"])
+            obj_response = regex_generic(pdf_data, obj_response)
+    except AttributeError:
+        obj_response = regex_generic(pdf_data, obj_response)
+
+    obj_response["Mes"] = int(obj_response["Mes"])
+    obj_response["Ano"] = int(obj_response["Ano"])
+    if isinstance(obj_response["Valor"], str):
+        obj_response["Valor"] = float(obj_response["Valor"].replace(",", "."))
+    if isinstance(obj_response["Juros"], str):
+        obj_response["Juros"] = float(obj_response["Juros"].replace(",", "."))
+    if isinstance(obj_response["Total"], str):
+        obj_response["Total"] = float(obj_response["Total"].replace(",", "."))
     return obj_response

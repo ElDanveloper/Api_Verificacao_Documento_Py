@@ -1,6 +1,5 @@
 import re
 from REGEXs._removeMask import numberWithoutMask
-
 findCnpj = re.compile(r'\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
 findCompetencia = re.compile(r'[a-zA-Z]{4,9}\s\w{2}\s\d{4}')
 findCompetenciaMesComoNumero = re.compile(r'\d{2}\s\w{2}\s\d{4}')

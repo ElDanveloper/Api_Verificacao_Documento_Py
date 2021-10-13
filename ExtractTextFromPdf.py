@@ -71,7 +71,6 @@ class Extract_text:
         return extracted_text, encoded_string.decode('ascii'), self.pdf_filename
 
     def teste_pdf_miner(self, local_pdf_filename):
-        
         self.local_pdf_filename = local_pdf_filename
         with open(self.local_pdf_filename, "rb") as pdf_file:
             encoded_string = base64.b64encode(pdf_file.read())
@@ -110,10 +109,3 @@ class Extract_text:
         with open(self.local_pdf_filename, "rb") as pdf_file:
             encoded_string = base64.b64encode(pdf_file.read())
         return "", encoded_string.decode('ascii'), self.local_pdf_filename
-
-
-if __name__ == "__main__":
-    pdf_data, arquivo, file_name = Extract_text().teste_pdf_miner(
-        r"C:\Users\danie\Downloads\kit admissao  cod 100.PDF")
-    print(pdf_data)
-    # print(Extract_text(r"C:/Daniel Dourado/REGEX-Python/Daniel/Expressoes Regulares/Doc Prioridade/CONTRA_CHEQUE_DOMINIO.pdf").teste_pdf_miner())
