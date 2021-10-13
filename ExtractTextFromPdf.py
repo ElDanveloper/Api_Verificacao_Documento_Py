@@ -34,15 +34,11 @@ class Extract_text:
     def __str__(self):
         return self.local_pdf_filename
 
-    def __test_pdf_image(self):
-        pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-        #pages = convert_from_path(self.local_pdf_filename,poppler_path=r'C:\Daniel Dourado\REGEX-Python\Daniel\Expressoes Regulares\API_Verificacao_Documento\Dependences\poppler-0.68.0\bin')
-        # pages = convert_from_path(self.local_pdf_filename,poppler_path="C:\\Daniel Dourado\\REGEX-Python\\Daniel\\Expressoes Regulares\\API_Verificacao_Documento"+"\\Dependences\\poppler-0.68.0\\bin")
-        pages = convert_from_path(self.local_pdf_filename, poppler_path=os.getcwd(
-        )+"\\Dependences\\poppler-0.68.0\\bin")
-
+    def __test_pdf_image(self):        
+        pytesseract.pytesseract.tesseract_cmd = r"C:/Program Files/Tesseract-OCR/tesseract.exe"
+        pages = convert_from_path(self.local_pdf_filename, poppler_path=r"./Dependences/poppler-21.09.0/Library/bin")        
         image_counter = 1
-        for page in pages:
+        for page in pages:           
             filename = "page_"+str(image_counter)+".jpg"
             page.save(filename, 'JPEG')
             image_counter = image_counter + 1
@@ -75,19 +71,19 @@ class Extract_text:
         return extracted_text, encoded_string.decode('ascii'), self.pdf_filename
 
     def teste_pdf_miner(self, local_pdf_filename):
+        
         self.local_pdf_filename = local_pdf_filename
         with open(self.local_pdf_filename, "rb") as pdf_file:
             encoded_string = base64.b64encode(pdf_file.read())
         try:
             extracted_text = high_level.extract_text(
                 self.local_pdf_filename, "")
-            # print(extracted_text)
             if extracted_text == "" or extracted_text.__contains__("(cid:"):
                 extracted_text = self.__test_pdf_image()
         except pdfminer.pdfdocument.PDFPasswordIncorrect as e:
             extracted_text = ""
-        except:
-            raise FalhaNaLeituraPdf()
+        except FalhaNaLeituraPdf():
+            raise FalhaNaLeituraPdf          
         return extracted_text, encoded_string.decode('ascii'), self.local_pdf_filename
 
     def docx_file(self, local_pdf_filename):

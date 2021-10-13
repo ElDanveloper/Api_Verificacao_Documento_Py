@@ -8,7 +8,7 @@ def find_type_file(pdf_data,arquivo,file_name):
     "ContractorClientId": 0,
     "DataInc": "",
     "Descricao": "",
-    "Nome": file_name.split("/")[2][:-4].replace(".",""),
+    "Nome": file_name.split("/")[4][:-4].replace(".",""),
     "Tipo": "",
     "Cnpj": "",
     "Competencia": "",
@@ -74,7 +74,7 @@ def find_type_file(pdf_data,arquivo,file_name):
     from REGEXs.ComprovanteArrecadacaoDAS import regex_compArrecDAS
     from REGEXs.Kit_Admissao import regex_kit_admissao
     from REGEXs.Generic_file import regex_generic
-    
+    from REGEXs.GPS_WEB import regex_gps_web
     
     try:
         if regex_contra_cheque(pdf_data,obj_response) is not None:
@@ -161,9 +161,11 @@ def find_type_file(pdf_data,arquivo,file_name):
             obj_response=regex_compArrecDAS(pdf_data,obj_response)
         elif regex_kit_admissao(pdf_data,obj_response) is not None:
             obj_response=regex_kit_admissao(pdf_data,obj_response)
+        elif regex_gps_web(pdf_data, obj_response) is not None:
+            obj_response - regex_gps_web(pdf_data, obj_response)
         else:
             obj_response=regex_generic(pdf_data,obj_response)
-    except AttributeError:
+    except AttributeError as e:
         obj_response=regex_generic(pdf_data,obj_response)
       
     obj_response["Mes"]=int(obj_response["Mes"])
