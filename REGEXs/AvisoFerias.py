@@ -1,6 +1,7 @@
 import re
 from REGEXs._removeMask import numberWithoutMask
-findNomeInteressado = re.compile(r'-\s[\w ]+')
+findNomeInteressado = re.compile(
+    r'-\s[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+')
 findCNPJ = re.compile(r'\d{2}.\d{3}.\d{3}\/\d{4}-\d{2}')
 findEmpresa = re.compile(r'Empresa:\s[\w ]+')
 findCPFInteressado = re.compile(r'\d{3}.\d{3}.\d{3}-\d{2}')
