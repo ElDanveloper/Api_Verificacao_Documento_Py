@@ -2,12 +2,11 @@ import re
 from REGEXs._removeMask import numberWithoutMask
 findDarfCpfCnpj = re.compile(
     r'\d{3}.\d{3}.\d{3}-\d{2}|\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
-findDarfPeriodoApuracao = re.compile(
-    r'Periodo de Apuracao\n\n\d{2}\/\d{2}\/\d{4}|VALOR TOTAL\n\n\d{2}\/\d{2}\/\d{4}|\d{2}\/\d{2}\/\d{4}\nSECRETARIA')
+findDarfPeriodoApuracao = re.compile(r'(\d{2}\/\d{2}\/\d{4})\nSECRETARIA')
 findDarfAntigoCodigoReceita = re.compile(
     r'DARECEITA > \d{4}\n', flags=re.MULTILINE)
 findDarfValidade = re.compile(r'acolhimento: \d{2}\/\d{2}\/\d{4}')
-findDarfTotal = re.compile(r'TOTAL 5 \d\.')
+findDarfTotal = re.compile(r'TOTAL\s5\s(\.*\d*\.*\d+),\d{2}')
 findDarfAntigoCodigoBarras = re.compile(r'(\d{11}-\d    ){3}\d{11}-\d')
 
 
@@ -35,10 +34,13 @@ def regex_darf(contra_cheque, obj_response):
             DD, MM, AA = findDarfValidade.search(
                 contra_cheque).group().split(' ')[1].split('/')
             obj_response["Vencimento"] = AA+"-"+MM+"-"+DD
-            obj_response["Total"] = findDarfAntigoTotalARecolher.search(
-                contra_cheque).group()
-            obj_response["CodigoBarras"] = findDarfAntigoCodigoBarras.search(
-                contra_cheque).group().replace(" ", "").replace("-", "")
+            obj_response["Total"] = findDarfTotal.search(
+                contra_cheque).group().replace("TOTAL 5 ", "")
+            try:
+                obj_response["CodigoBarras"] = findDarfAntigoCodigoBarras.search(
+                    contra_cheque).group().replace(" ", "").replace("-", "")
+            except:
+                pass
             return obj_response
 
         elif re.search(r'web', contra_cheque) is not None:
