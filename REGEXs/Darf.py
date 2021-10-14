@@ -77,35 +77,23 @@ def regex_darf(contra_cheque, obj_response):
 
     elif re.search(r'CNO', contra_cheque) is not None:
         regexVencimento = re.compile(r'Vencimento: \d{2}\/\d{2}\/\d{4}')
-        regexCodigoReceita = re.compile(
-            r'Numero: \d{2}[\.]\d{2}[\.]\d{5}[\.]\d{7}[-]\d')
-        regexCnpj = re.compile(
-            r'\d{3}.\d{3}.\d{3}-\d{2}|\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
+        regexCodigoReceita = re.compile(r'Numero: \d{2}[\.]\d{2}[\.]\d{5}[\.]\d{7}[-]\d')
+        regexCnpj = re.compile(r'\d{3}.\d{3}.\d{3}-\d{2}|\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
         regexCompetencia = re.compile(r'PA:\d{2}[\/]\d{4}')
         regexValorTotal = re.compile(r'Valor: \d+\.\d+,\d+')
         regexBoleto = re.compile(r'(\d{11} \d{1}( |\n)){4}')
-
-            obj_response["Descricao"] = "Darf CNO"
-            obj_response["Tipo"] = "102"
-
-        DD, MM, AA = regexVencimento.search(
-            contra_cheque).group().split(' ')[1].split('/')
+        obj_response["Descricao"] = "Darf CNO"
+        obj_response["Tipo"] = "102"
+        DD, MM, AA = regexVencimento.search(contra_cheque).group().split(' ')[1].split('/')
         obj_response["Vencimento"] = AA+"-"+MM+"-"+DD
-        obj_response["CodigoReceita"] = regexCodigoReceita.search(
-            contra_cheque).group().split(' ')[1].replace('.', '').replace('-', '')
-        obj_response["Cnpj"] = regexCnpj.search(contra_cheque).group().replace(
-            '.', '').replace('/', '').replace('-', '')
-        mes, ano = regexCompetencia.search(
-            contra_cheque).group().replace("PA:", '').split("/")
-
+        obj_response["CodigoReceita"] = regexCodigoReceita.search(contra_cheque).group().split(' ')[1].replace('.', '').replace('-', '')
+        obj_response["Cnpj"] = regexCnpj.search(contra_cheque).group().replace('.', '').replace('/', '').replace('-', '')
+        mes, ano = regexCompetencia.search(contra_cheque).group().replace("PA:", '').split("/")
         obj_response["Mes"] = mes
         obj_response["Ano"] = ano
-
         obj_response["PeriodoApuracao"] = ano+"-"+mes+'-01'
-        obj_response["Total"] = regexValorTotal.search(contra_cheque).group().split(' ')[
-            1].replace('.', ',').replace(',', '')
-        obj_response["CodigoBarras"] = regexBoleto.search(
-            contra_cheque).group().replace(' ', '').replace('\n', '')
+        obj_response["Total"] = regexValorTotal.search(contra_cheque).group().split(' ')[1].replace('.', ',').replace(',', '')
+        obj_response["CodigoBarras"] = regexBoleto.search(contra_cheque).group().replace(' ', '').replace('\n', '')
         return obj_response
 
     return None
