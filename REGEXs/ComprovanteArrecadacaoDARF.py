@@ -8,7 +8,7 @@ findBanco = re.compile(r'Banco\n\n(\w+\s)+')
 
 def regex_compArrecDARF(contra_cheque, obj_response):
     if re.search(r'registro de Arrecadação \(DARF\)',contra_cheque) is not None: 
-        obj_response["Nome"]="Comprovante de Arrecadação(DARF)"
+        obj_response["Descricao"] = "Comprovante de Arrecadação(DARF)"
         obj_response["Tipo"]="97"
         obj_response["Cnpj"]=numberWithoutMask(findCnpj.search(contra_cheque).group())
         periodoApuracao,none,vencimento= findPeriodoApuracaoVencimento.search(contra_cheque).group().split("\n")

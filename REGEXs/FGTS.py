@@ -8,7 +8,7 @@ findCógidoDeBarras = re.compile(r'\d+  \d+  \d+  \d+')
 
 def regex_fgts(contra_cheque, obj_response):
     if re.search(r'GRF - GUIA DE RECOLHIMENTO DO FGTS',contra_cheque) is not None:
-        obj_response["Nome"]="Guia Recolhimento do FGTS"
+        obj_response["Descricao"] = "Guia Recolhimento do FGTS"
         obj_response["Tipo"]="61"
         obj_response["Cnpj"]=numberWithoutMask(findCnpj.search(contra_cheque).group())
         Mes,ano = findCompetencia.search(contra_cheque).group().split("/")

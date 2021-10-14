@@ -6,7 +6,7 @@ findNome = re.compile(r'SALDO:\n.+\n\n(\w+\s)+',)
 
 def regexExtratoFGTSTrabalhador(contra_cheque, obj_response):
     if re.search(r'Extrato FGTS do Trabalhador',contra_cheque) is not None: 
-        obj_response["Nome"]="Extrato FGTS do Trabalhador"
+        obj_response["Descricao"] = "Extrato FGTS do Trabalhador"
         obj_response["Tipo"]="28"
         obj_response["NomeInteressado"]=findNome.search(contra_cheque).group().split("\n")[3]
         obj_response["Cnpj"]=numberWithoutMask(findCnpj.search(contra_cheque).group())

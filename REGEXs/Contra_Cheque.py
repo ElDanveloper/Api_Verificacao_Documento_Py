@@ -22,7 +22,7 @@ Mes_ext = {
 
 def regex_contra_cheque(contra_cheque, obj_response):
     if re.search(r'Folha Mensal',contra_cheque) is not None and re.search(r'CC:',contra_cheque) is not None and re.search(r'CBO',contra_cheque) is not None and re.search(r'Nome do Funcionário',contra_cheque) is not None: 
-        obj_response["Nome"]="Contra Cheque Dominio"       
+        obj_response["Descricao"] = "Contra Cheque Dominio"
         obj_response["Tipo"]="48"
         obj_response["Cnpj"]=numberWithoutMask(findCnpj.search(contra_cheque).group())
         Mes, de, ano = findCompetencia.search(contra_cheque).group().split(" ")

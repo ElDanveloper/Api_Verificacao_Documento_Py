@@ -8,7 +8,7 @@ findBanco = re.compile(r'Banco\n\n.+')
 
 def regex_compArrecDAS(contra_cheque, obj_response):
     if re.search(r'registro de Arrecadação \(DAS\)',contra_cheque) is not None: 
-        obj_response["Nome"]="Comprovante de Arrecadação(DAS)"
+        obj_response["Descricao"] = "Comprovante de Arrecadação(DAS)"
         obj_response["Tipo"]="96"
         obj_response["Cnpj"]=numberWithoutMask(findCnpj.search(contra_cheque).group())
         competencia,none,vencimento= findcompetenciaVencimento.search(contra_cheque).group().split("\n")

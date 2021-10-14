@@ -6,7 +6,7 @@ findEmpresa = re.compile(r'CARTA DE REFERÊNCIA\n\n(\w+\s+)+')
 
 def regex_CartaReferencia(contra_cheque, obj_response):
     if re.search(r'CARTA DE REFERÊNCIA',contra_cheque) is not None: 
-        obj_response["Nome"]="CartaReferencia"
+        obj_response["Descricao"] = "CartaReferencia"
         obj_response["Tipo"]="24"
         obj_response["Cnpj"]=numberWithoutMask(findCnpj.search(contra_cheque).group())
         obj_response["Empresa"]=findEmpresa.search(contra_cheque).group().split('\n')[2]
