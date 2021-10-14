@@ -10,7 +10,7 @@ def find_type_file(pdf_data, arquivo, file_name):
         "ContractorClientId": 0,
         "DataInc": "",
         "Descricao": "",
-        "Nome": file_name.split("/")[2][:-4].replace(".", ""),
+        "Nome": file_name.split("/")[4][:-4].replace(".", ""),
         "Tipo": "",
         "Cnpj": "",
         "Competencia": "",
@@ -174,9 +174,21 @@ def find_type_file(pdf_data, arquivo, file_name):
     obj_response["Mes"] = int(obj_response["Mes"])
     obj_response["Ano"] = int(obj_response["Ano"])
     if isinstance(obj_response["Valor"], str):
+        try:
+            obj_response["Valor"] = obj_response["Valor"].replace(".", "")
+        except:
+            pass
         obj_response["Valor"] = float(obj_response["Valor"].replace(",", "."))
     if isinstance(obj_response["Juros"], str):
+        try:
+            obj_response["Juros"] = obj_response["Juros"].replace(".", "")
+        except:
+            pass
         obj_response["Juros"] = float(obj_response["Juros"].replace(",", "."))
     if isinstance(obj_response["Total"], str):
+        try:
+            obj_response["Total"] = obj_response["Total"].replace(".", "")
+        except:
+            pass
         obj_response["Total"] = float(obj_response["Total"].replace(",", "."))
     return obj_response
