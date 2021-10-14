@@ -1,7 +1,8 @@
 import re
 from REGEXs._removeMask import numberWithoutMask
 findCnpj = re.compile(r'\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
-findCompetencia = re.compile(r'\w+\s\w{2}\s\d{4}')
+findCompetencia = re.compile(r'[a-zA-Z]{4,9}\s\w{2}\s\d{4}')
+findCompetenciaMesComoNumero = re.compile(r'\d{2}\s\w{2}\s\d{4}')
 findCompetencia_eSocial = re.compile(r'[A-Za-z]+\/\d{4}')
 
 Mes_ext = {
@@ -21,10 +22,12 @@ Mes_ext = {
 
 def regex_contra_cheque(contra_cheque, obj_response):
     if re.search(r'Folha Mensal',contra_cheque) is not None and re.search(r'CC:',contra_cheque) is not None and re.search(r'CBO',contra_cheque) is not None and re.search(r'Nome do Funcionário',contra_cheque) is not None: 
-        obj_response["Nome"]="Contra Cheque Dominio"
+        obj_response["Nome"]="Contra Cheque Dominio"       
         obj_response["Tipo"]="48"
         obj_response["Cnpj"]=numberWithoutMask(findCnpj.search(contra_cheque).group())
         Mes, de, ano = findCompetencia.search(contra_cheque).group().split(" ")
+        if Mes is None or ano is None:
+            Mes, de, ano = findCompetenciaMesComoNumero.search(contra_cheque).group().split(" ")
         obj_response["Mes"]=Mes_ext[Mes]
         obj_response["Ano"]=ano
         return obj_response

@@ -12,9 +12,7 @@ def find_regex(pdf_data, arquivo, file_name, token):
 
 def sendObject(obj, token, file_name):
     from SendRequests import sendRequest
-    print(file_name)
-    response = sendRequest(
-        obj, "https://api.hunno.com.br:2004/dp/hunnodev/file/"+"ProcessaGenericDoc", token)
+    response = sendRequest(obj, get_base_url()+"ProcessaGenericDoc", token)
     resposta = {
         "Sucess": True,
         "msg": "",
@@ -46,7 +44,7 @@ def main(pathToPdfs, token):
     }
     from ExtractTextFromPdf import FalhaNaLeituraPdf
     for file in files:
-        try:
+        try:            
             if file.endswith(".pdf") or file.endswith(".PDF"):
                 pdf_data, arquivo, file_name = pdfReader.teste_pdf_miner(
                     pathToPdfs+file)
@@ -65,10 +63,9 @@ def main(pathToPdfs, token):
                     pathToPdfs+file)
                 resposta = find_regex(pdf_data, arquivo, file_name, token)
         except FalhaNaLeituraPdf:
-            print("deu falha")
-            # os.remove(pathToPdfs+file)
+            print("deu falha na leitura: ")
+            os.remove(pathToPdfs+file)
     return resposta
-
 
 pathToPdfs = sys.argv[1]
 token = sys.argv[2]

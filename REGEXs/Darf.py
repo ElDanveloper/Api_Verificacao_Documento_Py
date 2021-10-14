@@ -85,8 +85,8 @@ def regex_darf(contra_cheque, obj_response):
         regexValorTotal = re.compile(r'Valor: \d+\.\d+,\d+')
         regexBoleto = re.compile(r'(\d{11} \d{1}( |\n)){4}')
 
-        obj_response["Nome"] = "Darf CNO"
-        obj_response["Tipo"] = "102"
+            obj_response["Descricao"] = "Darf CNO"
+            obj_response["Tipo"] = "102"
 
         DD, MM, AA = regexVencimento.search(
             contra_cheque).group().split(' ')[1].split('/')

@@ -34,12 +34,11 @@ class Extract_text:
     def __str__(self):
         return self.local_pdf_filename
 
-    def __test_pdf_image(self):
-        pytesseract.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
-        pages = convert_from_path(
-            self.local_pdf_filename, poppler_path="./Dependences/poppler-21.09.0/Library/bin")
+    def __test_pdf_image(self):        
+        pytesseract.pytesseract.tesseract_cmd = r"C:/Program Files/Tesseract-OCR/tesseract.exe"
+        pages = convert_from_path(self.local_pdf_filename, poppler_path=r"./Dependences/poppler-21.09.0/Library/bin")        
         image_counter = 1
-        for page in pages:
+        for page in pages:           
             filename = "page_"+str(image_counter)+".jpg"
             page.save(filename, 'JPEG')
             image_counter = image_counter + 1
@@ -82,8 +81,8 @@ class Extract_text:
                 extracted_text = self.__test_pdf_image()
         except pdfminer.pdfdocument.PDFPasswordIncorrect as e:
             extracted_text = ""
-        except:
-            raise FalhaNaLeituraPdf()
+        except FalhaNaLeituraPdf():
+            raise FalhaNaLeituraPdf          
         return extracted_text, encoded_string.decode('ascii'), self.local_pdf_filename
 
     def docx_file(self, local_pdf_filename):
