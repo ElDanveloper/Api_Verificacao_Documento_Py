@@ -31,7 +31,6 @@ Mes_ext = {
     "Dezembro": "12",
     "dezembro": "12"
 }
-# or re.search(r'AVISO PRÉVIO DO EMPREGADOR PARA DISPENSA DO EMPREGADO',contra_cheque) is not None
 
 
 def regex_empreg_indenizadoV2(contra_cheque, obj_response):

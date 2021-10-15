@@ -35,7 +35,7 @@ def regex_darf(contra_cheque, obj_response):
                 contra_cheque).group().split(' ')[1].split('/')
             obj_response["Vencimento"] = AA+"-"+MM+"-"+DD
             obj_response["Total"] = findDarfTotal.search(
-                contra_cheque).group().split('\n')[0]
+                contra_cheque).group().split('\n')[0].replace(",", "").replace(".", "")
             try:
                 obj_response["CodigoBarras"] = findDarfCodigoBarras.search(
                     contra_cheque).group().replace(" ", "").replace("-", "")

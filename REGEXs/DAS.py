@@ -51,7 +51,6 @@ def regex_das(contra_cheque, obj_response):
         try:
             mes, ano = findCompetencia_eSocial.search(
                 contra_cheque).group().split('\n')[2].split('/')
-            print(mes)
             obj_response["Mes"] = mes_dict[mes]
             obj_response["Ano"] = ano
         except Exception as e:
