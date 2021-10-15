@@ -7,8 +7,8 @@ findVencimento = re.compile(r'\d{2}\/\d{2}\/\d{4}')
 findCodigoDeBarras = re.compile(
     r'^\d+\n{2}\d+\n{2}\d+\n{2}\d+$', flags=re.MULTILINE)
 findJuros = re.compile(r'E\s(\d+,\d{2})\n')
-findValor = re.compile(r'INSS\s(\d+\,\d{2}),')
-findTotalARecolher = re.compile(r'TOTAL\s(\d+,\d{2})\n')
+findValor = re.compile(r'INSS\n\n(\d*\.)*\d+,\d{2}')
+findTotalARecolher = re.compile(r'\n(\d*\.)*\d+,\d{2}\n\nAUTENTICA')
 
 
 def regex_gps_web(contra_cheque, obj_response):
@@ -25,10 +25,8 @@ def regex_gps_web(contra_cheque, obj_response):
         obj_response["Mes"] = mes
         obj_response["Ano"] = ano
         obj_response["Valor"] = findValor.search(
-            contra_cheque).group().replace("INSS ", "")[:-1]
-        obj_response["Juros"] = findJuros.search(
-            contra_cheque).group().replace("E ", "")[:-1]
+            contra_cheque).group().split('INSS\n\n')[1]
         obj_response["Total"] = findTotalARecolher.search(
-            contra_cheque).group().replace("TOTAL ", "")[:-1]
+            contra_cheque).group().split("\n")[1].replace("\n\nAUTENTICA", "")
         return obj_response
     return None
