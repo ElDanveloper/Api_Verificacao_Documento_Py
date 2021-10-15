@@ -13,7 +13,6 @@ def regex_situacao_fiscal(contra_cheque, obj_response):
         for ch in cpf:
             if ch.isdigit():
                 cpfNum += ch
-        print(obj_response["NomeInteressado"])
         obj_response["CpfCnpjInteressado"]=cpfNum
         return obj_response
     return None

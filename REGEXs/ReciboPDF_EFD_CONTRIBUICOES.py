@@ -13,7 +13,6 @@ def regex_efd_contribuicoes(contra_cheque, obj_response):
             findCnpj.search(contra_cheque).group())
         obj_response["Descricao"] = findCodigoReceita.search(
             contra_cheque).group().split(" ")[1]
-        print(findCodigoReceita.search(contra_cheque).group().split(" ")[1])
         mes, ano = findCompetencia.search(contra_cheque).group().split("/")
         obj_response["Mes"] = mes
         obj_response["Ano"] = ano
