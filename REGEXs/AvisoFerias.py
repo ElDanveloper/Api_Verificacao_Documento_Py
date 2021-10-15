@@ -8,7 +8,7 @@ findCPFInteressado = re.compile(r'\d{3}.\d{3}.\d{3}-\d{2}')
 
 
 def regex_AvisoFerias(contra_cheque, obj_response):
-    if re.search(r'A V I S O  D E  F E R I A S', contra_cheque) is not None:
+    if re.search(r'A V I S O  D E  F E R I A S', contra_cheque) is not None or re.search(r'AVISO DE FÉRIAS', contra_cheque):
         obj_response["Descricao"] = "AvisoFerias"
         obj_response["Tipo"] = "19"
         obj_response["NomeInteressado"] = findNomeInteressado.search(
