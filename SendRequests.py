@@ -2,15 +2,6 @@ import requests
 
 
 def sendRequest(body, url, token):
-    # values = {
-    # "email": "contato@leandroreboucas.com",
-    # "password": "041050"
-    # }
-    # response = requests.post("https://beta.hunno.com.br/api/login",values)
-    # print(response.json()["token"])
-    # headers = {
-    #     'Authorization': 'Bearer {}'.format(response.json()["token"])
-    # }
     token = 'Bearer '+token
     headers = {
         'Authorization': '{}'.format(token)
