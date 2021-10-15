@@ -77,6 +77,7 @@ def find_type_file(pdf_data, arquivo, file_name):
     from REGEXs.Kit_Admissao import regex_kit_admissao
     from REGEXs.Generic_file import regex_generic
     from REGEXs.GPS_WEB import regex_gps_web
+    from REGEXs.ETIQUETA_CTPS import etiqueta_CTPS
     try:
         if regex_contra_cheque(pdf_data, obj_response) is not None:
             obj_response = regex_contra_cheque(pdf_data, obj_response)
@@ -166,13 +167,17 @@ def find_type_file(pdf_data, arquivo, file_name):
             obj_response = regex_kit_admissao(pdf_data, obj_response)
         elif regex_gps_web(pdf_data, obj_response) is not None:
             obj_response = regex_gps_web(pdf_data, obj_response)
+        elif etiqueta_CTPS(pdf_data, obj_response) is not None:
+            obj_response = regex_gps_web(pdf_data, obj_response)
         else:
             obj_response = regex_generic(pdf_data, obj_response)
     except AttributeError:
         obj_response = regex_generic(pdf_data, obj_response)
-
-    obj_response["Mes"] = int(obj_response["Mes"])
-    obj_response["Ano"] = int(obj_response["Ano"])
+    try:
+        obj_response["Mes"] = int(obj_response["Mes"])
+        obj_response["Ano"] = int(obj_response["Ano"])
+    except:
+        pass
     if isinstance(obj_response["Valor"], str):
         try:
             obj_response["Valor"] = obj_response["Valor"].replace(".", "")
