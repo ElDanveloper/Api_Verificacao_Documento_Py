@@ -6,7 +6,7 @@ findDarfPeriodoApuracao = re.compile(r'(\d{2}\/\d{2}\/\d{4})\nSECRETARIA')
 findDarfCodigoReceita = re.compile(
     r'DARECEITA > \d{4}\n', flags=re.MULTILINE)
 findDarfValidade = re.compile(r'acolhimento: \d{2}\/\d{2}\/\d{4}')
-findDarfTotal = re.compile(r'TOTAL\s5\s(\.*\d*\.*\d+),\d{2}')
+findDarfTotal = re.compile(r'(\.*\d *\.*\d+),\d{2}\nSENDA')
 findDarfCodigoBarras = re.compile(r'(\d{11}-\d    ){3}\d{11}-\d')
 
 
@@ -35,7 +35,7 @@ def regex_darf(contra_cheque, obj_response):
                 contra_cheque).group().split(' ')[1].split('/')
             obj_response["Vencimento"] = AA+"-"+MM+"-"+DD
             obj_response["Total"] = findDarfTotal.search(
-                contra_cheque).group().replace("TOTAL 5 ", "")
+                contra_cheque).group().split('\n')[0]
             try:
                 obj_response["CodigoBarras"] = findDarfCodigoBarras.search(
                     contra_cheque).group().replace(" ", "").replace("-", "")
