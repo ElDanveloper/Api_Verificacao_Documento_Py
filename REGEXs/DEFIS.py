@@ -10,6 +10,7 @@ def regex_defis(contra_cheque, obj_response):
         obj_response["Tipo"] = "7"
         obj_response["Cnpj"] = numberWithoutMask(
             findCnpj.search(contra_cheque).group())
-        obj_response["Ano"] = findAno.search(contra_cheque).group().split(" ")[1]s
+        obj_response["Ano"] = findAno.search(
+            contra_cheque).group().split(" ")[1]
         return obj_response
     return None
