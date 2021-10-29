@@ -1,3 +1,48 @@
+from REGEXs.ETIQUETA_CTPS import etiqueta_CTPS
+from REGEXs.GPS_WEB import regex_gps_web
+from REGEXs.Generic_file import regex_generic
+from REGEXs.Kit_Admissao import regex_kit_admissao
+from REGEXs.ComprovanteArrecadacaoDAS import regex_compArrecDAS
+from REGEXs.ComprovanteArrecadacaoDARF import regex_compArrecDARF
+from REGEXs.SituacaoFiscal import regex_situacao_fiscal
+from REGEXs.RelatorioReembolso import regex_relatorioReembolso
+from REGEXs.ProgramacaoFerias import regexProgramacaoFerias
+from REGEXs.CertificadoRegularidadeFGTS import regex_certificadoRegFGTS
+from REGEXs.ExtratoFGTS import regexExtratoFGTSTrabalhador
+from REGEXs.RequerimentoSeguroDesemprego import regex_req_seguro_desemprego
+from REGEXs.GRRF_FGTS import regex_grrf_fgts
+from REGEXs.ExtratoContaFundoGarantia import regexExtratoContFundoGarantFGTS
+from REGEXs.CertidaoFederalCond import regex_CertidaoFederalCond
+from REGEXs.CadNacioanlPessJur import regex_CadNacPessJur
+from REGEXs.Carta_Referencia import regex_CartaReferencia
+from REGEXs.AvisoFerias import regex_AvisoFerias
+from REGEXs.DAS import regex_das
+from REGEXs.ISS import regex_iss
+from REGEXs.Darf import regex_darf
+from REGEXs.Relacao_Salarios_Contribuicao import regex_relacao_salarios_contribuicao
+from REGEXs.Termo_Rescisao_Verso import regex_termo_rescisao_verso
+from REGEXs.Termo_Rescisao_Frente import regex_termo_rescisao_frente
+from REGEXs.FGTS_Chave_Liberacao import regex_fgts_chave
+from REGEXs.Aviso_Empreg_IndenizadoV2 import regex_empreg_indenizadoV2
+from REGEXs.Aviso_Empreg_Indenizado import regex_empreg_indenizado
+from REGEXs.Recibo_Ferias import regex_recibo_ferias
+from REGEXs.GPS_Parcelamento import regex_gps_parcelamento
+from REGEXs.ReciboPDF_EFD_CONTRIBUICOES import regex_efd_contribuicoes
+from REGEXs.DMD_MOV import regex_dmd_mov
+from REGEXs.DMA_RESUMO import regex_dma_resumo
+from REGEXs.DEFIS import regex_defis
+from REGEXs.Renuncia_Vale import regex_renuncia_vale
+from REGEXs.IRPF_Recibo import regex_Irpf
+from REGEXs.GRRF_Relatorio import regex_grrf_relatorio
+from REGEXs.GFIP_Protocolo_caixa import regex_envio_arquivos
+from REGEXs.GFIP_Compensacao import regex_compensacao
+from REGEXs.GFIP_Rubrica import regex_gfip_rubrica
+from REGEXs.RE import regex_re
+from REGEXs.DAE import regex_dae
+from REGEXs.GFIP_GPS import regex_gps
+from REGEXs.FGTS import regex_fgts
+from REGEXs.Folha_Pagamento import regex_folha_pagamento
+from REGEXs.Contra_Cheque import regex_contra_cheque
 import sys
 sys.path.append('.\\REGEXs\\')
 
@@ -10,7 +55,7 @@ def find_type_file(pdf_data, arquivo, file_name):
         "ContractorClientId": 0,
         "DataInc": "",
         "Descricao": "",
-        "Nome": file_name.split("/")[4][:-4].replace(".", ""),
+        "Nome": file_name.split("/")[2][:-4].replace(".", ""),
         "Tipo": "",
         "Cnpj": "",
         "Competencia": "",
@@ -33,51 +78,7 @@ def find_type_file(pdf_data, arquivo, file_name):
         "NisInteressado": "",
         "ExtensaoArquivo": file_name[-4:].replace(".", "")
     }
-    from REGEXs.Contra_Cheque import regex_contra_cheque
-    from REGEXs.Folha_Pagamento import regex_folha_pagamento
-    from REGEXs.FGTS import regex_fgts
-    from REGEXs.GFIP_GPS import regex_gps
-    from REGEXs.DAE import regex_dae
-    from REGEXs.RE import regex_re
-    from REGEXs.GFIP_Rubrica import regex_gfip_rubrica
-    from REGEXs.GFIP_Compensacao import regex_compensacao
-    from REGEXs.GFIP_Protocolo_caixa import regex_envio_arquivos
-    from REGEXs.GRRF_Relatorio import regex_grrf_relatorio
-    from REGEXs.IRPF_Recibo import regex_Irpf
-    from REGEXs.Renuncia_Vale import regex_renuncia_vale
-    from REGEXs.DEFIS import regex_defis
-    from REGEXs.DMA_RESUMO import regex_dma_resumo
-    from REGEXs.DMD_MOV import regex_dmd_mov
-    from REGEXs.ReciboPDF_EFD_CONTRIBUICOES import regex_efd_contribuicoes
-    from REGEXs.GPS_Parcelamento import regex_gps_parcelamento
-    from REGEXs.Recibo_Ferias import regex_recibo_ferias
-    from REGEXs.Aviso_Empreg_Indenizado import regex_empreg_indenizado
-    from REGEXs.Aviso_Empreg_IndenizadoV2 import regex_empreg_indenizadoV2
-    from REGEXs.FGTS_Chave_Liberacao import regex_fgts_chave
-    from REGEXs.Termo_Rescisao_Frente import regex_termo_rescisao_frente
-    from REGEXs.Termo_Rescisao_Verso import regex_termo_rescisao_verso
-    from REGEXs.Relacao_Salarios_Contribuicao import regex_relacao_salarios_contribuicao
-    from REGEXs.Darf import regex_darf
-    from REGEXs.ISS import regex_iss
-    from REGEXs.DAS import regex_das
-    from REGEXs.AvisoFerias import regex_AvisoFerias
-    from REGEXs.Carta_Referencia import regex_CartaReferencia
-    from REGEXs.CadNacioanlPessJur import regex_CadNacPessJur
-    from REGEXs.CertidaoFederalCond import regex_CertidaoFederalCond
-    from REGEXs.ExtratoContaFundoGarantia import regexExtratoContFundoGarantFGTS
-    from REGEXs.GRRF_FGTS import regex_grrf_fgts
-    from REGEXs.RequerimentoSeguroDesemprego import regex_req_seguro_desemprego
-    from REGEXs.ExtratoFGTS import regexExtratoFGTSTrabalhador
-    from REGEXs.CertificadoRegularidadeFGTS import regex_certificadoRegFGTS
-    from REGEXs.ProgramacaoFerias import regexProgramacaoFerias
-    from REGEXs.RelatorioReembolso import regex_relatorioReembolso
-    from REGEXs.SituacaoFiscal import regex_situacao_fiscal
-    from REGEXs.ComprovanteArrecadacaoDARF import regex_compArrecDARF
-    from REGEXs.ComprovanteArrecadacaoDAS import regex_compArrecDAS
-    from REGEXs.Kit_Admissao import regex_kit_admissao
-    from REGEXs.Generic_file import regex_generic
-    from REGEXs.GPS_WEB import regex_gps_web
-    from REGEXs.ETIQUETA_CTPS import etiqueta_CTPS
+
     try:
         if regex_contra_cheque(pdf_data, obj_response) is not None:
             obj_response = regex_contra_cheque(pdf_data, obj_response)
@@ -171,7 +172,8 @@ def find_type_file(pdf_data, arquivo, file_name):
             obj_response = regex_gps_web(pdf_data, obj_response)
         else:
             obj_response = regex_generic(pdf_data, obj_response)
-    except AttributeError:
+    except AttributeError as e:
+        print(e)
         obj_response = regex_generic(pdf_data, obj_response)
     try:
         obj_response["Mes"] = int(obj_response["Mes"])
@@ -181,22 +183,22 @@ def find_type_file(pdf_data, arquivo, file_name):
                 obj_response["Valor"] = obj_response["Valor"].replace(".", "")
             except:
                 pass
-            obj_response["Valor"] = float(
-                obj_response["Valor"].replace(",", "."))
+            obj_response["Valor"] = int(
+                obj_response["Valor"].replace(",", ""))
         if isinstance(obj_response["Juros"], str):
             try:
                 obj_response["Juros"] = obj_response["Juros"].replace(".", "")
             except:
                 pass
-            obj_response["Juros"] = float(
-                obj_response["Juros"].replace(",", "."))
+            obj_response["Juros"] = int(
+                obj_response["Juros"].replace(",", ""))
         if isinstance(obj_response["Total"], str):
             try:
                 obj_response["Total"] = obj_response["Total"].replace(".", "")
             except:
                 pass
-            obj_response["Total"] = float(
-                obj_response["Total"].replace(",", "."))
+            obj_response["Total"] = int(
+                obj_response["Total"].replace(",", ""))
     except:
         pass
 
