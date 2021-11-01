@@ -26,7 +26,6 @@ mes_dict = {
     "Dezembro": "12"
 }
 
-
 def regex_das(contra_cheque, obj_response):
     if re.search(r'Documento de Arrecada', contra_cheque) is not None and re.search('Simples Nacional', contra_cheque) or re.search(r'eSocial', contra_cheque) is not None:
         if re.search(r'eSocial', contra_cheque) is not None:
@@ -62,13 +61,14 @@ def regex_das(contra_cheque, obj_response):
         try:
             DD, MM, AA = findValidade1.search(
                 contra_cheque).group().split('\n')[2].split('/')
+            obj_response["Vencimento"] = AA+"-"+MM+"-"+DD
         except:
             try:
                 DD, MM, AA = findValidade2.search(
                     contra_cheque).group().split(': ')[1].split('/')
+                obj_response["Vencimento"] = AA+"-"+MM+"-"+DD
             except:
-                pass
-        obj_response["Vencimento"] = AA+"-"+MM+"-"+DD
+                pass     
         try:
             obj_response["Total"] = findTotalARecolher.search(
                 contra_cheque).group().split('\n')[2].replace(",", "").replace(".", "")
