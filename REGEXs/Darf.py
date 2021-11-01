@@ -112,6 +112,7 @@ def regex_darf(contra_cheque, obj_response):
             DD, MM, AA = findVencimentoGPS.search(
                 contra_cheque).group().split('Vencimento:')[1].split('/')
             obj_response['Vencimento'] = AA+"-"+MM+"-"+DD
+            obj_response["Tipo"] = "56"
             obj_response['Cnpj'] = findDarfCpfCnpj.search(
                 contra_cheque).group().replace('.', '').replace('/', '').replace('-', '')
             obj_response['Empresa'] = findEmpresas.search(
