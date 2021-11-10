@@ -1,7 +1,7 @@
 import re
 from REGEXs._removeMask import numberWithoutMask
 findEmpresa = re.compile(
-    r'Empregador:\n[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+[-\s]*[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]*\n')
+    r'Empregador:\n[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+[\.]*[-\s]*[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]*\n')
 findCNPJ = re.compile(r'\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
 
 
