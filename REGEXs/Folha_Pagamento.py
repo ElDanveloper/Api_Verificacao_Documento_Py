@@ -12,12 +12,8 @@ def regex_folha_pagamento(contra_cheque, obj_response):
         obj_response["Tipo"] = "49"
         obj_response["Cnpj"] = numberWithoutMask(
             findCnpj.search(contra_cheque).group())
-        try:
-            valorTotal = findTotalARecolher.search(
-                contra_cheque).group().split("\n")[3]
-        except:
-            valorTotal = findTotalARecolher.search(
-                contra_cheque).group().split('\n')[2]
+        valorTotal = findTotalARecolher.search(
+            contra_cheque).group().split("\n")[2]
         valorTotalNum = ""
         for num in valorTotal:
             if num.isdigit():
