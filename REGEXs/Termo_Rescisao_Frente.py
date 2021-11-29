@@ -10,7 +10,7 @@ findTotalARecolher = re.compile(r'LÍQUIDO\n\nR\$ (\d+.\d+,\d+)')
 
 
 def regex_termo_rescisao_frente(contra_cheque, obj_response):
-    if re.search(r'TERMO DE RESCISÃO DO CONTRATO DE TRABALHO', contra_cheque) is not None:
+    if re.search(r'TERMO DE RESCIS', contra_cheque) is not None and re.search(r'DO CONTRATO DE TRABALHO', contra_cheque) is not None:
         obj_response["Nome"] = "Termo Rescisao Frente"
         obj_response["NisInteressado"] = findNisInteresado.search(
             contra_cheque).group()

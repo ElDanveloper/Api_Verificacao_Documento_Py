@@ -9,7 +9,7 @@ findCompetencia = re.compile(
 
 
 def regex_termo_rescisao_verso(contra_cheque, obj_response):
-    if re.search(r'TERMO DE QUITAÇÃO DE RESCISÃO DO CONTRATO DE TRABALHO', contra_cheque) is not None or re.search(r'TERMO DE HOMOLOGAÇÃO DE RESCISÃO DO CONTRATO DE TRABALHO', contra_cheque) is not None:
+    if re.search(r'TERMO DE QUITA', contra_cheque) is not None or re.search(r'TERMO DE HOMOLOGA', contra_cheque) is not None and re.search(r'RESCIS', contra_cheque) is not None and re.search(r'DO CONTRATO DE TRABALHO', contra_cheque) is not None:
         obj_response["Nome"] = "Termo Rescisao Verso"
         obj_response["NomeInteressado"] = findNome.search(
             contra_cheque).group().split('\n')[1]
