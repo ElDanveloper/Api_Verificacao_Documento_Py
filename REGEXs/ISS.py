@@ -10,7 +10,7 @@ findTotalARecolher = re.compile(r'Total em R\$ \d+(,\d+)?')
 
 
 def regex_iss(contra_cheque, obj_response):
-    if re.search(r'DAM - Documento de Arrecadagao Municipal', contra_cheque) is not None:
+    if re.search(r'DAM - Documento de Arrecada', contra_cheque) is not None:
         obj_response["Descricao"] = "Guia ISS"
         obj_response["Tipo"] = "5"
         obj_response["CodigoReceita"] = findCodigoReceita.search(
