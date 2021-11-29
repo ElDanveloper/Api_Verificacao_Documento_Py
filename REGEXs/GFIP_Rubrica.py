@@ -5,7 +5,7 @@ findCompetencia = re.compile(r'^\d{2}\/\d{4}$', flags=re.MULTILINE)
 
 
 def regex_gfip_rubrica(contra_cheque, obj_response):
-    if re.search(r'COMPROVANTE DE DECLARA', contra_cheque) is not None and re.search(r'A RECOLHER', contra_cheque) is not None and re.search(r'SOCIAL E A OUTRAS ENTIDADES E FUNDOS POR FPAS') is not None:
+    if re.search(r'COMPROVANTE DE DECLARA', contra_cheque) is not None and re.search(r'A RECOLHER', contra_cheque) is not None and re.search(r'SOCIAL E A OUTRAS ENTIDADES E FUNDOS POR FPAS', contra_cheque) is not None:
         obj_response["Descricao"] = "Gfip Rubrica"
         obj_response["Tipo"] = "76"
         obj_response["Cnpj"] = numberWithoutMask(
