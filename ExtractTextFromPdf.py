@@ -36,7 +36,7 @@ class Extract_text:
 
     def __test_pdf_image(self):        
         pytesseract.pytesseract.tesseract_cmd = r"C:/Program Files/Tesseract-OCR/tesseract.exe"
-        pages = convert_from_path(self.local_pdf_filename, poppler_path=r"./Dependences/poppler-21.09.0/Library/bin")        
+        pages = convert_from_path(self.local_pdf_filename, poppler_path=r"C:/Users/Administrator/Documents/Api_Verificacao_Documento_Py/Dependences/poppler-21.09.0/Library/bin")        
         image_counter = 1
         for page in pages:           
             filename = "page_"+str(image_counter)+".jpg"
@@ -101,7 +101,6 @@ class Extract_text:
             encoded_string = base64.b64encode(pdf_file.read())
         txt = Path(self.local_pdf_filename).read_text(
             errors="ignore").replace('\n', '')
-        print(str(txt))
         return txt, encoded_string.decode('ascii'), self.local_pdf_filename
 
     def unknown_file(self, local_pdf_filename):

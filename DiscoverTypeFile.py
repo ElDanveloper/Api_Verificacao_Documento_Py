@@ -48,6 +48,7 @@ sys.path.append('.\\REGEXs\\')
 
 
 def find_type_file(pdf_data, arquivo, file_name):
+    #print(file_name)
     obj_response = {
         "Id": 0,
         "ContractorId": 0,
@@ -55,7 +56,7 @@ def find_type_file(pdf_data, arquivo, file_name):
         "ContractorClientId": 0,
         "DataInc": "",
         "Descricao": "",
-        "Nome": file_name.split("/")[2][:-4].replace(".", ""),
+        "Nome": file_name.split("/")[4][:-4].replace(".", ""),
         "Tipo": "",
         "Cnpj": "",
         "Competencia": "",
@@ -169,7 +170,7 @@ def find_type_file(pdf_data, arquivo, file_name):
         elif regex_gps_web(pdf_data, obj_response) is not None:
             obj_response = regex_gps_web(pdf_data, obj_response)
         elif etiqueta_CTPS(pdf_data, obj_response) is not None:
-            obj_response = regex_gps_web(pdf_data, obj_response)
+            obj_response = etiqueta_CTPS(pdf_data, obj_response)
         else:
             obj_response = regex_generic(pdf_data, obj_response)
     except AttributeError as e:

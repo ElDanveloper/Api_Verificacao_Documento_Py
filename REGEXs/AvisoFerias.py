@@ -6,7 +6,6 @@ findCNPJ = re.compile(r'\d{2}.\d{3}.\d{3}\/\d{4}-\d{2}')
 findEmpresa = re.compile(r'Empresa:\s[\w ]+')
 findCPFInteressado = re.compile(r'\d{3}.\d{3}.\d{3}-\d{2}')
 
-
 def regex_AvisoFerias(contra_cheque, obj_response):
     if re.search(r'A V I S O  D E  F E R I A S', contra_cheque) is not None or re.search(r'AVISO DE FÉRIAS', contra_cheque):
         obj_response["Descricao"] = "AvisoFerias"
