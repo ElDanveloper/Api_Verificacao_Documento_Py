@@ -5,6 +5,7 @@ from REGEXs.Kit_Admissao import regex_kit_admissao
 from REGEXs.ComprovanteArrecadacaoDAS import regex_compArrecDAS
 from REGEXs.ComprovanteArrecadacaoDARF import regex_compArrecDARF
 from REGEXs.SituacaoFiscal import regex_situacao_fiscal
+from REGEXs.SituacaoFiscal_v2 import regex_situacao_fiscal_v2
 from REGEXs.RelatorioReembolso import regex_relatorioReembolso
 from REGEXs.ProgramacaoFerias import regexProgramacaoFerias
 from REGEXs.CertificadoRegularidadeFGTS import regex_certificadoRegFGTS
@@ -23,6 +24,7 @@ from REGEXs.Relacao_Salarios_Contribuicao import regex_relacao_salarios_contribu
 from REGEXs.Termo_Rescisao_Verso import regex_termo_rescisao_verso
 from REGEXs.Termo_Rescisao_Frente import regex_termo_rescisao_frente
 from REGEXs.FGTS_Chave_Liberacao import regex_fgts_chave
+from REGEXs.FGTS_Chave_Liberacao_V2 import regex_fgts_chave_v2
 from REGEXs.Aviso_Empreg_IndenizadoV2 import regex_empreg_indenizadoV2
 from REGEXs.Aviso_Empreg_Indenizado import regex_empreg_indenizado
 from REGEXs.Recibo_Ferias import regex_recibo_ferias
@@ -38,11 +40,14 @@ from REGEXs.GFIP_Protocolo_caixa import regex_envio_arquivos
 from REGEXs.GFIP_Compensacao import regex_compensacao
 from REGEXs.GFIP_Rubrica import regex_gfip_rubrica
 from REGEXs.RE import regex_re
+# from REGEXs.RE_V2 import regex_re_v2
 from REGEXs.DAE import regex_dae
 from REGEXs.GFIP_GPS import regex_gps
 from REGEXs.FGTS import regex_fgts
+from REGEXs.FGTS_V2 import regex_fgts_v2
 from REGEXs.Folha_Pagamento import regex_folha_pagamento
 from REGEXs.Contra_Cheque import regex_contra_cheque
+from REGEXs.adiantamento import regex_adiantamento
 import sys
 sys.path.append('.\\REGEXs\\')
 
@@ -87,12 +92,16 @@ def find_type_file(pdf_data, arquivo, file_name):
             obj_response = regex_folha_pagamento(pdf_data, obj_response)
         elif regex_fgts(pdf_data, obj_response) is not None:
             obj_response = regex_fgts(pdf_data, obj_response)
+        elif regex_fgts_v2(pdf_data, obj_response) is not None:
+            obj_response = regex_fgts_v2(pdf_data, obj_response)
         elif regex_gps(pdf_data, obj_response) is not None:
             obj_response = regex_gps(pdf_data, obj_response)
         elif regex_dae(pdf_data, obj_response) is not None:
             obj_response = regex_dae(pdf_data, obj_response)
         elif regex_re(pdf_data, obj_response) is not None:
             obj_response = regex_re(pdf_data, obj_response)
+        # elif regex_re_v2(pdf_data, obj_response) is not None:
+        #     obj_response = regex_re_v2(pdf_data, obj_response)
         elif regex_gfip_rubrica(pdf_data, obj_response) is not None:
             obj_response = regex_gfip_rubrica(pdf_data, obj_response)
         elif regex_compensacao(pdf_data, obj_response) is not None:
@@ -123,6 +132,8 @@ def find_type_file(pdf_data, arquivo, file_name):
             obj_response = regex_empreg_indenizadoV2(pdf_data, obj_response)
         elif regex_fgts_chave(pdf_data, obj_response) is not None:
             obj_response = regex_fgts_chave(pdf_data, obj_response)
+        elif regex_fgts_chave_v2(pdf_data, obj_response) is not None:
+            obj_response = regex_fgts_chave_v2(pdf_data, obj_response)
         elif regex_termo_rescisao_frente(pdf_data, obj_response) is not None:
             obj_response = regex_termo_rescisao_frente(pdf_data, obj_response)
         elif regex_termo_rescisao_verso(pdf_data, obj_response) is not None:
@@ -161,6 +172,8 @@ def find_type_file(pdf_data, arquivo, file_name):
             obj_response = regex_relatorioReembolso(pdf_data, obj_response)
         elif regex_situacao_fiscal(pdf_data, obj_response) is not None:
             obj_response = regex_situacao_fiscal(pdf_data, obj_response)
+        elif regex_situacao_fiscal_v2(pdf_data, obj_response) is not None:
+            obj_response = regex_situacao_fiscal_v2(pdf_data, obj_response)
         elif regex_compArrecDARF(pdf_data, obj_response) is not None:
             obj_response = regex_compArrecDARF(pdf_data, obj_response)
         elif regex_compArrecDAS(pdf_data, obj_response) is not None:
@@ -171,6 +184,8 @@ def find_type_file(pdf_data, arquivo, file_name):
             obj_response = regex_gps_web(pdf_data, obj_response)
         elif etiqueta_CTPS(pdf_data, obj_response) is not None:
             obj_response = etiqueta_CTPS(pdf_data, obj_response)
+        elif regex_adiantamento(pdf_data, obj_response) is not None:
+            obj_response = regex_adiantamento(pdf_data, obj_response)
         else:
             obj_response = regex_generic(pdf_data, obj_response)
     except AttributeError as e:

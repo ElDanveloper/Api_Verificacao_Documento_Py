@@ -1,6 +1,8 @@
 import os
 import json
 import sys
+import shutil
+import requests
 from base_url import get_base_url
 
 
@@ -18,58 +20,95 @@ def sendObject(obj, token, file_name):
         "msg": "",
         "data": ""
     }
-    if type(response) == dict:
-        #print(response)
-        with open("C:/Users/Administrator/Documents/Api_Verificacao_Documento_Py/Sucesso/"+file_name.split("/")[4][:-4].replace(".", "")+".json", 'a', encoding='utf-8') as f:
-            json.dump(obj, f, ensure_ascii=False, indent=4)
-        resposta["msg"] = "O arquivo do tipo " + \
-            obj["Descricao"]+" foi lido e enviado com sucesso!",
-        resposta["data"] = response
-    else:
-        with open("C:/Users/Administrator/Documents/Api_Verificacao_Documento_Py/DeramErro/"+file_name.split("/")[4][:-4].replace(".", "")+".json", 'a', encoding='utf-8') as f:
-            json.dump(obj, f, ensure_ascii=False, indent=4)
-        resposta["msg"] = "O arquivo não foi reconhecido",
-        resposta["Sucess"] = False
-    os.remove(file_name)
+    try:
+        if type(response) == dict:
+            with open("C:/Users/Administrator/Documents/Api_Verificacao_Documento_Py/Sucesso/" +
+                      file_name.split("/")[4][:-4].replace(".", "")+".json", 'a', encoding='utf-8') as f:
+                json.dump(obj, f, ensure_ascii=False, indent=4)
+            resposta["msg"] = f"O arquivo do tipo {obj['Descricao']} foi lido e enviado com sucesso!"
+            resposta["data"] = response
+        else:
+            with open("C:/Users/Administrator/Documents/Api_Verificacao_Documento_Py/DeramErro/" +
+                      file_name.split("/")[4][:-4].replace(".", "")+".json", 'a', encoding='utf-8') as f:
+                json.dump(obj, f, ensure_ascii=False, indent=4)
+            resposta["msg"] = "O arquivo não foi reconhecido"
+            resposta["Sucess"] = False
+            notify_error(file_name)
+    finally:
+        if os.path.exists(file_name):
+            os.remove(file_name)
+
     return resposta
+
+
+def save_error(file_name, obj=None, error_msg=None):
+    path_erro = "C:/Users/Administrator/Documents/Api_Verificacao_Documento_Py/DeramErro/"
+    os.makedirs(path_erro, exist_ok=True)
+    destino = os.path.join(path_erro, os.path.basename(file_name))
+
+    try:
+        shutil.move(file_name, destino)
+    except Exception as e:
+        print(f"Erro ao mover {file_name} para DeramErro: {e}")
+
+
+def notify_error(file_name):
+    try:
+        payload = {"file_with_error": os.path.basename(file_name)}
+        requests.post("https://webhook.interchat.com.br/webhook/deram-erro", json=payload, timeout=5)
+    except Exception as e:
+        print(f"Falha ao enviar webhook de erro: {e}")
 
 
 def main(pathToPdfs, token):
     files = os.listdir(pathToPdfs)
-    from ExtractTextFromPdf import Extract_text
+    from ExtractTextFromPdf import Extract_text, FalhaNaLeituraPdf
     pdfReader = Extract_text()
     resposta = {
         "Arquivos Enviados": len(files),
         "Arquivos": []
     }
-    from ExtractTextFromPdf import FalhaNaLeituraPdf
     for file in files:
-        try:            
+        file_path = os.path.join(pathToPdfs, file)
+        try:
+            print(file)
+        except UnicodeEncodeError:
+            print(file.encode("utf-8", errors="replace").decode("utf-8"))
+            save_error(file_path, error_msg="Erro de encoding no nome do arquivo")
+            notify_error(file_path)
+            if os.path.exists(file_path):
+                os.remove(file_path)
+            continue  
+
+        try:
             if file.endswith(".pdf") or file.endswith(".PDF"):
-                pdf_data, arquivo, file_name = pdfReader.teste_pdf_miner(
-                    pathToPdfs+file)
-                resposta["Arquivos"].append(find_regex(
-                    pdf_data, arquivo, file_name, token))
+                pdf_data, arquivo, file_name = pdfReader.teste_pdf_miner(file_path)
+                resposta["Arquivos"].append(find_regex(pdf_data, arquivo, file_name, token))
             elif file.endswith(".docx") or file.endswith(".DOCX"):
-                pdf_data, arquivo, file_name = pdfReader.docx_file(
-                    pathToPdfs+file)
-                resposta = find_regex(pdf_data, arquivo, file_name, token)
+                pdf_data, arquivo, file_name = pdfReader.docx_file(file_path)
+                resposta["Arquivos"].append(find_regex(pdf_data, arquivo, file_name, token))
             elif file.endswith(".txt") or file.endswith(".TXT"):
-                pdf_data, arquivo, file_name = pdfReader.txt_file(
-                    pathToPdfs+file)
-                resposta = find_regex(pdf_data, arquivo, file_name, token)
+                pdf_data, arquivo, file_name = pdfReader.txt_file(file_path)
+                resposta["Arquivos"].append(find_regex(pdf_data, arquivo, file_name, token))
             else:
-                pdf_data, arquivo, file_name = pdfReader.unknown_file(
-                    pathToPdfs+file)
-                resposta = find_regex(pdf_data, arquivo, file_name, token)
+                pdf_data, arquivo, file_name = pdfReader.unknown_file(file_path)
+                resposta["Arquivos"].append(find_regex(pdf_data, arquivo, file_name, token))
         except FalhaNaLeituraPdf:
-            print("deu falha na leitura: ")
-            os.remove(pathToPdfs+file)
+            print("Deu falha na leitura")
+            save_error(file_path, error_msg="Falha na leitura do PDF")
+            notify_error(file_path)
+            if os.path.exists(file_path):
+                os.remove(file_path)
+        except Exception as e:
+            print(f"Erro inesperado ao processar {file}: {e}")
+            save_error(file_path, error_msg="Erro inesperado no processamento")
+            notify_error(file_path)
+            if os.path.exists(file_path):
+                os.remove(file_path)
+
     return resposta
+
 
 pathToPdfs = sys.argv[1]
 token = sys.argv[2]
 main(pathToPdfs, token)
-
-#if __name__ == "__main__":
-#    main("C:/Apps_NodeJS/hunnocrm-api-node/uploads/", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJub21lIjoiTWFyY2lvIENvc3RhIFNpbHZhIiwiY3BmX2NucGoiOiI2MDYwMTk4MTU1MyIsImNvbnRyYWN0b3JfaWQiOiIxIiwiY29udHJhY3Rvcl9jbnBqIjoiMTEzNzgwMDQwMDAxMjQiLCJpZCI6IjEiLCJwZXJzb25faWQiOiIzMzEiLCJlbWFpbCI6Im1hcmNpb0Bwb2xsb2NvbnRhYmlsLmNvbS5iciIsInBob25lX2NlbGwiOiI3NTk5MTg2NDY5NiIsInR5cGVfdXNlciI6IkMiLCJwZXJmaWxfdXNlciI6IkQiLCJhY3RpdmUiOnRydWUsInVzZXJfaWRfc3VwZXJ2aXNvciI6IjEiLCJ1c2VyX3Bhc3N3b3JkIjoiJDJhJDEwJDJ6aDZjTHg0WjlkenVFUWVxNHd6Vi56ZzdkTTNEVXBlZ3Rpa0NONDg4bm5ac0RqbjJOUE1PIiwiZGVwYXJ0bWVudF9pZCI6IjciLCJzaW1wbGVfbmFtZSI6Ik3DoXJjaW8gQ29zdGEiLCJjYW1pbmhvX2ZvdG8iOm51bGwsImNvbnRyYWN0b3IiOlt7ImlkIjoiMSIsInBlcnNvbl9pZCI6IjExNyIsIm5vbWUiOiJQT0xMTyBDT05TVUxUT1JJQSBDT05UQUJJTCBFIFNJU1RFTUFTIExUREEiLCJjcGZfY25waiI6IjExMzc4MDA0MDAwMTI0IiwiZG9jX2Zvcm1hdCI6IjExLjM3OC4wMDQvMDAwMS0yNCIsInRpcG9faW5zY3JpY2FvIjoiMSIsInRpcG8iOiJKIiwiY2FtaW5ob19mb3RvIjoiaHR0cHM6Ly9pLmltZ3VyLmNvbS9TU25pRm9ELnBuZyIsImNydCI6IjEiLCJjcmNfc3Vic2NyaXB0aW9uIjoiMDE4MzkyIiwiZW1haWwiOiJtYXJjaW9AcG9sbGNvbnRhYmlsLmNvbS5iciIsIndoYXRzYXBwX2J1c2luZXNzIjoiNzU5OTE4NjQ2OTYiLCJpbnN0YWdyYW0iOm51bGwsImZhY2Vib29rIjpudWxsLCJ5b3V0dWJlIjpudWxsLCJsaW5rZWRpbiI6bnVsbCwiZ29vZ2xlX2FjY291bnQiOm51bGwsImRhdGVfcmVnaXN0ZXIiOiIyMDE5LTA3LTE0VDE0OjU2OjI0LjAwMFoiLCJkYXRlX2luaXRpYWxfY29udHJhY3QiOiIyMDE5LTA3LTE0VDE0OjU2OjI5LjAwMFoiLCJkYXRlX2xhc3RfY29udHJhY3QiOiIyMDE5LTA3LTE0VDE0OjU2OjM0LjAwMFoiLCJhY3RpdmVfY29udHJhY3QiOm51bGwsImRlcGFydGFtZW50b19pZCI6IjciLCJkZXBhcnRhbWVudG9fdXNlcl9yZXNwIjoiMSIsImRlcGFydGFtZW50b19ub21lIjoiQWRtaW5pc3RyYXRpdm8iLCJkZXBhcnRhbWVudG9fdGlwbyI6bnVsbH1dLCJjbGllbnRzIjpbXSwiaWF0IjoxNjQwMTcyMTE0LCJleHAiOjE2NDAyNTg1MTR9.Ub62RWZeiFd63igbYZTg2RgViVxLxh1fvy6HBt-4nzI")
