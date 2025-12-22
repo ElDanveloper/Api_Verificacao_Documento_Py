@@ -88,6 +88,10 @@ def main(pathToPdfs, token):
 
                 pdf_data, arquivo, file_name = pdfReader.teste_pdf_miner(
                     file_path)
+                
+                # print("--- INICIO DO TEXTO ---")
+                # print(pdf_data)
+                # print("--- FIM DO TEXTO ---")
 
                 resposta["Arquivos"].append(find_regex(
                     pdf_data, arquivo, file_name, token))

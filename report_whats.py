@@ -5,6 +5,7 @@ EVOLUTION_API_URL = "https://evolution.interchat.com.br"
 EVOLUTION_API_KEY = "23d673da678ee9566f6c09b5a0c33e4e"              
 INSTANCE_NAME = "Pollo-Contabilidade"               
 RECIPIENT_NUMBER = "557591352127-1578313973@g.us"  
+# RECIPIENT_NUMBER = "557599685324"
 # ------------------------------------------
 
 def notify_error(file_name):
