@@ -12,7 +12,7 @@ findCógidoDeBarras = re.compile(r'\d+ \d+ \d+ \d+')
 
 def buscar_matriz_na_api(cnpj_raiz):
 
-    url = f"http://localhost:3000/api/client/deleted/false?cpf_cnpj={cnpj_raiz}"
+    url = f"https://app.hunno.com.br/api/client/deleted/false?cpf_cnpj={cnpj_raiz}"
     headers = {
         "Authorization": "Bearer K23913k921dklsadlasd32313dasKDSMDKMSd"
     }
