@@ -40,7 +40,7 @@ from REGEXs.GFIP_Protocolo_caixa import regex_envio_arquivos
 from REGEXs.GFIP_Compensacao import regex_compensacao
 from REGEXs.GFIP_Rubrica import regex_gfip_rubrica
 from REGEXs.RE import regex_re
-# from REGEXs.RE_V2 import regex_re_v2
+from REGEXs.RE_V2 import regex_re_v2
 from REGEXs.DAE import regex_dae
 from REGEXs.GFIP_GPS import regex_gps
 from REGEXs.FGTS import regex_fgts
@@ -49,11 +49,13 @@ from REGEXs.Folha_Pagamento import regex_folha_pagamento
 from REGEXs.Contra_Cheque import regex_contra_cheque
 from REGEXs.adiantamento import regex_adiantamento
 import sys
+import traceback
 sys.path.append('.\\REGEXs\\')
 
 
 def find_type_file(pdf_data, arquivo, file_name):
-    #print(file_name)
+    print(f"LOG: Iniciando identificacao do arquivo: {file_name}")
+    
     obj_response = {
         "Id": 0,
         "ContractorId": 0,
@@ -100,8 +102,8 @@ def find_type_file(pdf_data, arquivo, file_name):
             obj_response = regex_dae(pdf_data, obj_response)
         elif regex_re(pdf_data, obj_response) is not None:
             obj_response = regex_re(pdf_data, obj_response)
-        # elif regex_re_v2(pdf_data, obj_response) is not None:
-        #     obj_response = regex_re_v2(pdf_data, obj_response)
+        elif regex_re_v2(pdf_data, obj_response) is not None:
+            obj_response = regex_re_v2(pdf_data, obj_response)
         elif regex_gfip_rubrica(pdf_data, obj_response) is not None:
             obj_response = regex_gfip_rubrica(pdf_data, obj_response)
         elif regex_compensacao(pdf_data, obj_response) is not None:
@@ -187,10 +189,17 @@ def find_type_file(pdf_data, arquivo, file_name):
         elif regex_adiantamento(pdf_data, obj_response) is not None:
             obj_response = regex_adiantamento(pdf_data, obj_response)
         else:
+            print("LOG: Nenhum regex especifico funcionou, usando generico.")
             obj_response = regex_generic(pdf_data, obj_response)
     except AttributeError as e:
-        print(e)
+        print(f"LOG: Erro de Atributo (Provavel falha de Regex): {e}")
+        traceback.print_exc()
         obj_response = regex_generic(pdf_data, obj_response)
+    except Exception as e:
+        print(f"LOG: Erro Inesperado na identificacao: {e}")
+        traceback.print_exc()
+        obj_response = regex_generic(pdf_data, obj_response)
+
     try:
         obj_response["Mes"] = int(obj_response["Mes"])
         obj_response["Ano"] = int(obj_response["Ano"])
@@ -218,4 +227,5 @@ def find_type_file(pdf_data, arquivo, file_name):
     except:
         pass
 
+    print(f"LOG: Identificacao Concluida. Tipo detectado: {obj_response.get('Descricao', 'N/A')} | Nome: {obj_response.get('Nome', 'N/A')}")
     return obj_response

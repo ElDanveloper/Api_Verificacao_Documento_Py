@@ -20,6 +20,7 @@ def sendObject(obj, token, file_name):
         "msg": "",
         "data": ""
     }
+    # print("Objeto a ser enviado:", file_name)
 
     try:
         if type(response) == dict:
@@ -90,7 +91,7 @@ def main(pathToPdfs, token):
                     file_path)
                 
                 # print("--- INICIO DO TEXTO ---")
-                # print(pdf_data)
+                print(pdf_data)
                 # print("--- FIM DO TEXTO ---")
 
                 resposta["Arquivos"].append(find_regex(
