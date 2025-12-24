@@ -11,17 +11,13 @@ findCompetencia = re.compile(r'Comp.*\nApuração.*\n.*\n(\d{2}\/\d{4})')
 # Regex alternativa para o formato "13º/2024"
 findCompetenciaAlternativa = re.compile(r'(13º\/\d{4})')
 
-findValidade = re.compile(r'^\d{2}\/\d{2}\/\d{4}$', flags=re.MULTILINE)
-
-findValor = re.compile(r'Total\s+da\s+Guia\s*\(FGTS\):\s*([\d\.]+,\d{2})')
-
 def regex_re_v2(contra_cheque, obj_response):
     try:
         # Verifique padrões obrigatórios no texto
         if re.search(r'Detalhe da Guia Emitida', contra_cheque) and re.search(r'Relação de Trabalhadores', contra_cheque):
-
-            obj_response["Nome"] = "RE DIGITAL"
-            obj_response["Tipo"] = "59"
+            
+            obj_response["Nome"] = "GRRF_Relatorio"
+            obj_response["Tipo"] = "99"
 
             # Encontrar CNPJ
             match_cnpj = findCnpj.search(contra_cheque)
@@ -61,19 +57,6 @@ def regex_re_v2(contra_cheque, obj_response):
                     obj_response["Mes"] = None
                     obj_response["Ano"] = None
                     obj_response["Erro"] = "Competência não encontrada no documento."
-                    
-            match_total_fgts = findValor.search(contra_cheque)
-            if match_total_fgts:
-                valor_fgts = match_total_fgts.group(1)             
-                obj_response["Total"] = valor_fgts
-            else:
-                obj_response["Total"] = 0
-
-            
-            match_validade = findValidade.search(contra_cheque)
-            if match_validade:
-                DD, MM, AA = match_validade.group().split('/')
-                obj_response["Vencimento"] = f"{AA}-{MM}-{DD}"
 
             # Valida e converte Mes e Ano para inteiros, caso sejam encontrados
             if obj_response.get("Mes") is not None:

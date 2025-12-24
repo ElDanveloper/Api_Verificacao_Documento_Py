@@ -10,7 +10,10 @@ findCompetencia = re.compile(r'^\d{2}\/\d{4}', flags=re.MULTILINE)
 findTotalARecolher = re.compile(r'Total Geral:\s*([\d.,]+)') 
 findValidade = re.compile(r'^\d{2}\/\d{2}\/\d{4}$', flags=re.MULTILINE)
 findCógidoDeBarras = re.compile(r'\d+ \d+ \d+ \d+')
-
+findValorRecolher = re.compile(
+    r'Valor\s+a\s+recolher\s*\n\s*([\d\.]+,\d{2})',
+    re.IGNORECASE
+)
 # def buscar_matriz_na_api(cnpj_raiz):
 
 #     url = f"https://app.hunno.com.br/api/client/deleted/false?cpf_cnpj={cnpj_raiz}"
@@ -60,6 +63,15 @@ def regex_fgts_v2(contra_cheque, obj_response):
             obj_response["Mes"] = Mes
             obj_response["Ano"] = ano
 
+        match_valor_recolher = findValorRecolher.search(contra_cheque)
+        if match_valor_recolher:
+            valor_recolher = match_valor_recolher.group(1)
+
+            obj_response["Total"] = valor_recolher
+        else:
+            obj_response["Total"] = None
+
+            
         match_total = findTotalARecolher.search(contra_cheque)
         if match_total:
             valor_texto = match_total.group(1) 
