@@ -36,6 +36,7 @@ from REGEXs.DEFIS import regex_defis
 from REGEXs.Renuncia_Vale import regex_renuncia_vale
 from REGEXs.IRPF_Recibo import regex_Irpf
 from REGEXs.GRRF_Relatorio import regex_grrf_relatorio
+from REGEXs.GRRF_Relatorio_V2 import regex_grrf_relatorio_v2
 from REGEXs.GFIP_Protocolo_caixa import regex_envio_arquivos
 from REGEXs.GFIP_Compensacao import regex_compensacao
 from REGEXs.GFIP_Rubrica import regex_gfip_rubrica
@@ -100,6 +101,8 @@ def find_type_file(pdf_data, arquivo, file_name):
             obj_response = regex_gps(pdf_data, obj_response)
         elif regex_dae(pdf_data, obj_response) is not None:
             obj_response = regex_dae(pdf_data, obj_response)
+        elif regex_grrf_relatorio_v2(pdf_data, obj_response) is not None:
+            obj_response = regex_grrf_relatorio_v2(pdf_data, obj_response)
         elif regex_re(pdf_data, obj_response) is not None:
             obj_response = regex_re(pdf_data, obj_response)
         elif regex_re_v2(pdf_data, obj_response) is not None:

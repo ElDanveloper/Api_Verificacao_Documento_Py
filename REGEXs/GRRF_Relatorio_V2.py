@@ -2,86 +2,72 @@ import re
 from REGEXs._obterCnpj import buscar_matriz_na_api
 from REGEXs._removeMask import numberWithoutMask
 
-# Regex para encontrar CNPJ
-findCnpj = re.compile(r'\b\d{2}\.\d{3}\.\d{3}\b')
-
-# Regex para encontrar competência no formato "MM/YYYY"
+findCnpj = re.compile(r'\d{2}\.\d{3}\.\d{3}(?:\/\d{4}-\d{2})?')
 findCompetencia = re.compile(r'Comp.*\nApuração.*\n.*\n(\d{2}\/\d{4})')
-
-# Regex alternativa para o formato "13º/2024"
 findCompetenciaAlternativa = re.compile(r'(13º\/\d{4})')
+findValidade = re.compile(r'^\d{2}\/\d{2}\/\d{4}$', flags=re.MULTILINE)
+findValor = re.compile(r'Total\s+da\s+Guia\s*\(FGTS\):\s*([\d\.]+,\d{2})')
+findValidacaoRescisorio = re.compile(r"\d{2}\/\d{2}\/\d{4}\s+Rescisório", re.IGNORECASE)
 
-def regex_re_v2(contra_cheque, obj_response):
+def regex_grrf_relatorio_v2(contra_cheque, obj_response):
     try:
-        # Verifique padrões obrigatórios no texto
         if re.search(r'Detalhe da Guia Emitida', contra_cheque) and re.search(r'Relação de Trabalhadores', contra_cheque):
             
+            if not findValidacaoRescisorio.search(contra_cheque):
+                return None
+
             obj_response["Nome"] = "GRRF_Relatorio"
             obj_response["Tipo"] = "99"
 
-            # Encontrar CNPJ
             match_cnpj = findCnpj.search(contra_cheque)
             if match_cnpj:
                 cnpj_extraido = numberWithoutMask(match_cnpj.group())
                 
-            if len(cnpj_extraido) == 8:
-                cnpj_completo = buscar_matriz_na_api(cnpj_extraido)
-                obj_response["Cnpj"] = cnpj_completo
+                if len(cnpj_extraido) == 8:
+                    cnpj_completo = buscar_matriz_na_api(cnpj_extraido)
+                    obj_response["Cnpj"] = cnpj_completo
+                else:
+                    obj_response["Cnpj"] = cnpj_extraido
             else:
-                obj_response["Cnpj"] = cnpj_extraido
+                obj_response["Cnpj"] = None
 
-            # Encontrar competência
             competencia_match = findCompetencia.search(contra_cheque)
             if competencia_match:
                 try:
                     mes, ano = competencia_match.group(1).split("/")
-                    obj_response["Mes"] = mes
-                    obj_response["Ano"] = ano
+                    obj_response["Mes"] = int(mes)
+                    obj_response["Ano"] = int(ano)
                 except ValueError:
-                    obj_response["Mes"] = None
-                    obj_response["Ano"] = None
-                    obj_response["Erro"] = "Formato inesperado para a competência encontrada."
+                    pass
             else:
-                # Tentar encontrar a competência no formato alternativo
                 competencia_alt_match = findCompetenciaAlternativa.search(contra_cheque)
                 if competencia_alt_match:
                     try:
                         mes_ano = competencia_alt_match.group(1).split("º/")
-                        obj_response["Mes"] = mes_ano[0]
-                        obj_response["Ano"] = mes_ano[1]
+                        obj_response["Mes"] = int(mes_ano[0])
+                        obj_response["Ano"] = int(mes_ano[1])
                     except ValueError:
-                        obj_response["Mes"] = None
-                        obj_response["Ano"] = None
-                        obj_response["Erro"] = "Formato inesperado para a competência alternativa encontrada."
-                else:
-                    obj_response["Mes"] = None
-                    obj_response["Ano"] = None
-                    obj_response["Erro"] = "Competência não encontrada no documento."
+                        pass
 
-            # Valida e converte Mes e Ano para inteiros, caso sejam encontrados
-            if obj_response.get("Mes") is not None:
-                try:
-                    obj_response["Mes"] = int(obj_response["Mes"])
-                except ValueError:
-                    obj_response["Erro"] = "Valor de 'Mes' não é um número válido."
-            else:
-                obj_response["Mes"] = 0  # Valor padrão para Mes não encontrado
+            if obj_response.get("Mes") is None:
+                obj_response["Mes"] = 0
+                obj_response["Ano"] = 0
 
-            if obj_response.get("Ano") is not None:
-                try:
-                    obj_response["Ano"] = int(obj_response["Ano"])
-                except ValueError:
-                    obj_response["Erro"] = "Valor de 'Ano' não é um número válido."
+            match_valor = findValor.search(contra_cheque)
+            if match_valor:
+                obj_response["Total"] = match_valor.group(1)
             else:
-                obj_response["Ano"] = 0  # Valor padrão para Ano não encontrado
+                obj_response["Total"] = "0"
+
+            match_validade = findValidade.search(contra_cheque)
+            if match_validade:
+                DD, MM, AA = match_validade.group().split('/')
+                obj_response["Vencimento"] = f"{AA}-{MM}-{DD}"
 
             return obj_response
 
-        # Caso os padrões obrigatórios não sejam encontrados
-        obj_response["Erro"] = "Documento inválido: padrões obrigatórios ausentes."
-        return obj_response
+        return None
 
     except Exception as e:
-        # Log ou tratamento de erro genérico
-        obj_response["Erro"] = f"Erro inesperado durante o processamento: {str(e)}"
+        obj_response["Erro"] = str(e)
         return obj_response
