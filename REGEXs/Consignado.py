@@ -2,26 +2,19 @@ import re
 from REGEXs._obterCnpj import buscar_matriz_na_api
 from REGEXs._removeMask import numberWithoutMask
 
-# Regexes Originais
 findCnpj = re.compile(r'Empregador:\s*(\d{2}\.\d{3}\.\d{3})', re.IGNORECASE)
-findCompetencia = re.compile(r'Comp.*\nApuração.*\n.*\n(\d{2}\/\d{4})')
-findCompetenciaAlternativa = re.compile(r'(13º\/\d{4})')
+findCompetencia = re.compile(r'Valor\s+Consignado\s+na\s+Guia\s+(\d{2}\/\d{4})', re.IGNORECASE)
 findValidade = re.compile(r'^\d{2}\/\d{2}\/\d{4}$', flags=re.MULTILINE)
-findValor = re.compile(r'Total\s+da\s+Guia\s*\(FGTS\):\s*([\d\.]+,\d{2})')
-findValidacaoRescisorio = re.compile(r"\d{2}\/\d{2}\/\d{4}\s+Rescisório", re.IGNORECASE)
+findValor = re.compile(r'Total\s+da\s+Guia\s*\(Consignado\):\s*([\d\.]+,\d{2})')
+findValorBase = re.compile(r'Total\s+Consignado\s+([\d\.]+,\d{2})', re.IGNORECASE)
 
-def regex_re_v2(contra_cheque, obj_response):
+
+def regex_consignado(contra_cheque, obj_response):
     try:
-        if re.search(r'Detalhe da Guia Emitida', contra_cheque) and re.search(r'Relação de Trabalhadores', contra_cheque):
+        if re.search(r'Detalhe da Guia Emitida', contra_cheque) and re.search(r'Relação de Trabalhadores', contra_cheque) and re.search(r'Total\s+da\s+Guia\s*\(Consignado\)', contra_cheque):
 
-            if findValidacaoRescisorio.search(contra_cheque):
-                return None 
-            
-            if re.search(r'Total da Guia \(Consignado\)', contra_cheque):
-                return None
-
-            obj_response["Nome"] = "RE DIGITAL"
-            obj_response["Tipo"] = "59"
+            obj_response["Nome"] = "Detalhes Guia Consignado"
+            obj_response["Tipo"] = "109"
 
             match_cnpj = findCnpj.search(contra_cheque)
             if match_cnpj:
@@ -33,9 +26,7 @@ def regex_re_v2(contra_cheque, obj_response):
                 else:
                     obj_response["Cnpj"] = cnpj_extraido
             else:
-
                 obj_response["Cnpj"] = "" 
-
 
             competencia_match = findCompetencia.search(contra_cheque)
             if competencia_match:
@@ -48,21 +39,9 @@ def regex_re_v2(contra_cheque, obj_response):
                     obj_response["Ano"] = None
                     obj_response["Erro"] = "Formato inesperado para a competência encontrada."
             else:
-
-                competencia_alt_match = findCompetenciaAlternativa.search(contra_cheque)
-                if competencia_alt_match:
-                    try:
-                        mes_ano = competencia_alt_match.group(1).split("º/")
-                        obj_response["Mes"] = mes_ano[0]
-                        obj_response["Ano"] = mes_ano[1]
-                    except ValueError:
-                        obj_response["Mes"] = None
-                        obj_response["Ano"] = None
-                        obj_response["Erro"] = "Formato inesperado para a competência alternativa encontrada."
-                else:
-                    obj_response["Mes"] = None
-                    obj_response["Ano"] = None
-                    obj_response["Erro"] = "Competência não encontrada no documento."
+                obj_response["Mes"] = None
+                obj_response["Ano"] = None
+                obj_response["Erro"] = "Competência não encontrada no documento."
                     
             match_total_fgts = findValor.search(contra_cheque)
             if match_total_fgts:
@@ -70,13 +49,18 @@ def regex_re_v2(contra_cheque, obj_response):
                 obj_response["Total"] = valor_fgts
             else:
                 obj_response["Total"] = 0
-
+                
+            match_valor_base = findValorBase.search(contra_cheque)
+            if match_valor_base:
+                obj_response["Valor"] = match_valor_base.group(1)
+            else:
+                obj_response["Valor"] = 0
+                
             match_validade = findValidade.search(contra_cheque)
             if match_validade:
                 DD, MM, AA = match_validade.group().split('/')
                 obj_response["Vencimento"] = f"{AA}-{MM}-{DD}"
 
-            # Valida e converte Mes e Ano para inteiros
             if obj_response.get("Mes") is not None:
                 try:
                     obj_response["Mes"] = int(obj_response["Mes"])

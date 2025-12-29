@@ -46,6 +46,7 @@ from REGEXs.DAE import regex_dae
 from REGEXs.GFIP_GPS import regex_gps
 from REGEXs.FGTS import regex_fgts
 from REGEXs.FGTS_V2 import regex_fgts_v2
+from REGEXs.Consignado import regex_consignado
 from REGEXs.Folha_Pagamento import regex_folha_pagamento
 from REGEXs.Contra_Cheque import regex_contra_cheque
 from REGEXs.adiantamento import regex_adiantamento
@@ -56,6 +57,7 @@ sys.path.append('.\\REGEXs\\')
 
 def find_type_file(pdf_data, arquivo, file_name):
     print(f"LOG: Iniciando identificacao do arquivo: {file_name}")
+    print(pdf_data)
     
     obj_response = {
         "Id": 0,
@@ -97,6 +99,8 @@ def find_type_file(pdf_data, arquivo, file_name):
             obj_response = regex_fgts(pdf_data, obj_response)
         elif regex_fgts_v2(pdf_data, obj_response) is not None:
             obj_response = regex_fgts_v2(pdf_data, obj_response)
+        elif regex_consignado(pdf_data, obj_response) is not None:
+            obj_response = regex_consignado(pdf_data, obj_response)
         elif regex_gps(pdf_data, obj_response) is not None:
             obj_response = regex_gps(pdf_data, obj_response)
         elif regex_dae(pdf_data, obj_response) is not None:
