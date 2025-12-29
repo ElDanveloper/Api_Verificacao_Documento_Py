@@ -208,31 +208,40 @@ def find_type_file(pdf_data, arquivo, file_name):
         obj_response = regex_generic(pdf_data, obj_response)
 
     try:
-        obj_response["Mes"] = int(obj_response["Mes"])
-        obj_response["Ano"] = int(obj_response["Ano"])
-        if isinstance(obj_response["Valor"], str):
-            try:
-                obj_response["Valor"] = obj_response["Valor"].replace(".", "")
-            except:
-                pass
-            obj_response["Valor"] = int(
-                obj_response["Valor"].replace(",", ""))
-        if isinstance(obj_response["Juros"], str):
-            try:
-                obj_response["Juros"] = obj_response["Juros"].replace(".", "")
-            except:
-                pass
-            obj_response["Juros"] = int(
-                obj_response["Juros"].replace(",", ""))
-        if isinstance(obj_response["Total"], str):
-            try:
-                obj_response["Total"] = obj_response["Total"].replace(".", "")
-            except:
-                pass
-            obj_response["Total"] = int(
-                obj_response["Total"].replace(",", ""))
+        obj_response["Mes"] = int(obj_response.get("Mes") or 0)
     except:
-        pass
+        obj_response["Mes"] = 0
+
+    try:
+        obj_response["Ano"] = int(obj_response.get("Ano") or 0)
+    except:
+        obj_response["Ano"] = 0
+
+    campos_monetarios = ["Valor", "Juros", "Multa", "Total"]
+    
+    for campo in campos_monetarios:
+        valor_original = obj_response.get(campo)
+        
+        if valor_original is None or valor_original == "":
+            obj_response[campo] = 0
+            continue
+            
+        if isinstance(valor_original, str):
+            try:
+                limpo = valor_original.replace(".", "")
+                limpo = limpo.replace(",", "")
+                obj_response[campo] = int(limpo)
+            except ValueError:
+                obj_response[campo] = 0
+        elif isinstance(valor_original, (int, float)):
+             obj_response[campo] = int(valor_original)
+        else:
+             obj_response[campo] = 0
+
+    campos_texto = ["Cnpj", "Descricao", "Nome", "Tipo", "Vencimento"]
+    for campo in campos_texto:
+        if obj_response.get(campo) is None:
+             obj_response[campo] = ""
 
     print(f"LOG: Identificacao Concluida. Tipo detectado: {obj_response.get('Descricao', 'N/A')} | Nome: {obj_response.get('Nome', 'N/A')}")
     return obj_response
