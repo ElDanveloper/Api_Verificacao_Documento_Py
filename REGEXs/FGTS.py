@@ -1,5 +1,6 @@
 import re
 import requests 
+from REGEXs._obterCnpj import buscar_matriz_na_api
 from REGEXs._removeMask import numberWithoutMask
 
 findCnpj = re.compile(r'\d{2}\.\d{3}\.\d{3}(?:\/\d{4}-\d{2})?')
@@ -9,34 +10,34 @@ findTotalARecolher = re.compile(r'15-TOTAL A RECOLHER\n\n.+')
 findValidade = re.compile(r'^\d{2}\/\d{2}\/\d{4}$', flags=re.MULTILINE)
 findCógidoDeBarras = re.compile(r'\d+ \d+ \d+ \d+')
 
-def buscar_matriz_na_api(cnpj_raiz):
+# def buscar_matriz_na_api(cnpj_raiz):
 
-    url = f"http://localhost:3000/api/client/deleted/false?cpf_cnpj={cnpj_raiz}"
-    headers = {
-        "Authorization": "Bearer K23913k921dklsadlasd32313dasKDSMDKMSd"
-    }
+#     url = f"http://localhost:3000/api/client/deleted/false?cpf_cnpj={cnpj_raiz}"
+#     headers = {
+#         "Authorization": "Bearer K23913k921dklsadlasd32313dasKDSMDKMSd"
+#     }
 
-    try:
-        response = requests.get(url, headers=headers, timeout=10)
-        if response.status_code == 200:
-            empresas = response.json()
+#     try:
+#         response = requests.get(url, headers=headers, timeout=10)
+#         if response.status_code == 200:
+#             empresas = response.json()
             
-            if not empresas:
-                return cnpj_raiz # Se não achar nada, retorna o que tem
+#             if not empresas:
+#                 return cnpj_raiz # Se não achar nada, retorna o que tem
             
-            for emp in empresas:
-                doc = emp.get('cpf_cnpj', '')
-                # Verifica se tem 14 dígitos e se a filial é 0001
-                if len(doc) == 14 and doc[8:12] == '0001':
-                    return doc
+#             for emp in empresas:
+#                 doc = emp.get('cpf_cnpj', '')
+#                 # Verifica se tem 14 dígitos e se a filial é 0001
+#                 if len(doc) == 14 and doc[8:12] == '0001':
+#                     return doc
 
-            return empresas[0].get('cpf_cnpj', cnpj_raiz)
+#             return empresas[0].get('cpf_cnpj', cnpj_raiz)
             
-    except Exception as e:
-        print(f"Erro ao consultar API Hunno: {e}")
-        return cnpj_raiz 
+#     except Exception as e:
+#         print(f"Erro ao consultar API Hunno: {e}")
+#         return cnpj_raiz 
     
-    return cnpj_raiz
+#     return cnpj_raiz
 
 def regex_fgts(contra_cheque, obj_response):
     if re.search(r'GRF - GUIA DE RECOLHIMENTO DO FGTS', contra_cheque) is not None:

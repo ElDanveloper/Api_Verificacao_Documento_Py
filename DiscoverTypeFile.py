@@ -52,196 +52,151 @@ from REGEXs.Contra_Cheque import regex_contra_cheque
 from REGEXs.adiantamento import regex_adiantamento
 import sys
 import traceback
+
 sys.path.append('.\\REGEXs\\')
 
+def get_default_response(file_name, arquivo):
+    """Retorna um objeto padrão para caso tudo falhe"""
+    return {
+        "Id": 0, "ContractorId": 0, "UserId": 0, "ContractorClientId": 0,
+        "DataInc": "", "Descricao": "Não Identificado", 
+        "Nome": file_name.split("/")[4][:-4].replace(".", "") if len(file_name.split("/")) > 4 else "Desconhecido",
+        "Tipo": "", "Cnpj": "", "Competencia": "", "PeriodoApuracao": "",
+        "Mes": 0, "Ano": 0, "CodigoReceita": "", "CodigoBarras": "",
+        "CpfCnpjInteressado": "", "NomeInteressado": "", "Link": "",
+        "Valor": 0, "Juros": 0, "Multa": 0, "Total": 0,
+        "CodigoBanco": "", "Vencimento": "", "Arquivo": str(arquivo),
+        "Empresa": "", "NisInteressado": "",
+        "ExtensaoArquivo": file_name[-4:].replace(".", "") if file_name else ""
+    }
 
 def find_type_file(pdf_data, arquivo, file_name):
     print(f"LOG: Iniciando identificacao do arquivo: {file_name}")
-    print(pdf_data)
     
-    obj_response = {
-        "Id": 0,
-        "ContractorId": 0,
-        "UserId": 0,
-        "ContractorClientId": 0,
-        "DataInc": "",
-        "Descricao": "",
-        "Nome": file_name.split("/")[4][:-4].replace(".", ""),
-        "Tipo": "",
-        "Cnpj": "",
-        "Competencia": "",
-        "PeriodoApuracao": "",
-        "Mes": 0,
-        "Ano": 0,
-        "CodigoReceita": "",
-        "CodigoBarras": "",
-        "CpfCnpjInteressado": "",
-        "NomeInteressado": "",
-        "Link": "",
-        "Valor": 0,
-        "Juros": 0,
-        "Multa": 0,
-        "Total": 0,
-        "CodigoBanco": "",
-        "Vencimento": "",
-        "Arquivo": str(arquivo),
-        "Empresa": "",
-        "NisInteressado": "",
-        "ExtensaoArquivo": file_name[-4:].replace(".", "")
-    }
+    #Objeto Inicial
+    obj_response = get_default_response(file_name, arquivo)
 
     try:
-        if regex_contra_cheque(pdf_data, obj_response) is not None:
-            obj_response = regex_contra_cheque(pdf_data, obj_response)
-        elif regex_folha_pagamento(pdf_data, obj_response) is not None:
-            obj_response = regex_folha_pagamento(pdf_data, obj_response)
-        elif regex_fgts(pdf_data, obj_response) is not None:
-            obj_response = regex_fgts(pdf_data, obj_response)
-        elif regex_fgts_v2(pdf_data, obj_response) is not None:
-            obj_response = regex_fgts_v2(pdf_data, obj_response)
-        elif regex_consignado(pdf_data, obj_response) is not None:
-            obj_response = regex_consignado(pdf_data, obj_response)
-        elif regex_gps(pdf_data, obj_response) is not None:
-            obj_response = regex_gps(pdf_data, obj_response)
-        elif regex_dae(pdf_data, obj_response) is not None:
-            obj_response = regex_dae(pdf_data, obj_response)
-        elif regex_grrf_relatorio_v2(pdf_data, obj_response) is not None:
-            obj_response = regex_grrf_relatorio_v2(pdf_data, obj_response)
-        elif regex_re(pdf_data, obj_response) is not None:
-            obj_response = regex_re(pdf_data, obj_response)
-        elif regex_re_v2(pdf_data, obj_response) is not None:
-            obj_response = regex_re_v2(pdf_data, obj_response)
-        elif regex_gfip_rubrica(pdf_data, obj_response) is not None:
-            obj_response = regex_gfip_rubrica(pdf_data, obj_response)
-        elif regex_compensacao(pdf_data, obj_response) is not None:
-            obj_response = regex_compensacao(pdf_data, obj_response)
-        elif regex_envio_arquivos(pdf_data, obj_response) is not None:
-            obj_response = regex_envio_arquivos(pdf_data, obj_response)
-        elif regex_grrf_relatorio(pdf_data, obj_response) is not None:
-            obj_response = regex_grrf_relatorio(pdf_data, obj_response)
-        elif regex_Irpf(pdf_data, obj_response) is not None:
-            obj_response = regex_Irpf(pdf_data, obj_response)
-        elif regex_renuncia_vale(pdf_data, obj_response) is not None:
-            obj_response = regex_renuncia_vale(pdf_data, obj_response)
-        elif regex_defis(pdf_data, obj_response) is not None:
-            obj_response = regex_defis(pdf_data, obj_response)
-        elif regex_dma_resumo(pdf_data, obj_response) is not None:
-            obj_response = regex_dma_resumo(pdf_data, obj_response)
-        elif regex_dmd_mov(pdf_data, obj_response) is not None:
-            obj_response = regex_dmd_mov(pdf_data, obj_response)
-        elif regex_efd_contribuicoes(pdf_data, obj_response) is not None:
-            obj_response = regex_efd_contribuicoes(pdf_data, obj_response)
-        elif regex_gps_parcelamento(pdf_data, obj_response) is not None:
-            obj_response = regex_gps_parcelamento(pdf_data, obj_response)
-        elif regex_recibo_ferias(pdf_data, obj_response) is not None:
-            obj_response = regex_recibo_ferias(pdf_data, obj_response)
-        elif regex_empreg_indenizado(pdf_data, obj_response) is not None:
-            obj_response = regex_empreg_indenizado(pdf_data, obj_response)
-        elif regex_empreg_indenizadoV2(pdf_data, obj_response) is not None:
-            obj_response = regex_empreg_indenizadoV2(pdf_data, obj_response)
-        elif regex_fgts_chave(pdf_data, obj_response) is not None:
-            obj_response = regex_fgts_chave(pdf_data, obj_response)
-        elif regex_fgts_chave_v2(pdf_data, obj_response) is not None:
-            obj_response = regex_fgts_chave_v2(pdf_data, obj_response)
-        elif regex_termo_rescisao_frente(pdf_data, obj_response) is not None:
-            obj_response = regex_termo_rescisao_frente(pdf_data, obj_response)
-        elif regex_termo_rescisao_verso(pdf_data, obj_response) is not None:
-            obj_response = regex_termo_rescisao_verso(pdf_data, obj_response)
-        elif regex_relacao_salarios_contribuicao(pdf_data, obj_response) is not None:
-            obj_response = regex_relacao_salarios_contribuicao(
-                pdf_data, obj_response)
-        elif regex_darf(pdf_data, obj_response) is not None:
-            obj_response = regex_darf(pdf_data, obj_response)
-        elif regex_iss(pdf_data, obj_response) is not None:
-            obj_response = regex_iss(pdf_data, obj_response)
-        elif regex_das(pdf_data, obj_response) is not None:
-            obj_response = regex_das(pdf_data, obj_response)
-        elif regex_AvisoFerias(pdf_data, obj_response) is not None:
-            obj_response = regex_AvisoFerias(pdf_data, obj_response)
-        elif regex_CartaReferencia(pdf_data, obj_response) is not None:
-            obj_response = regex_CartaReferencia(pdf_data, obj_response)
-        elif regex_CadNacPessJur(pdf_data, obj_response) is not None:
-            obj_response = regex_CadNacPessJur(pdf_data, obj_response)
-        elif regex_CertidaoFederalCond(pdf_data, obj_response) is not None:
-            obj_response = regex_CertidaoFederalCond(pdf_data, obj_response)
-        elif regexExtratoContFundoGarantFGTS(pdf_data, obj_response) is not None:
-            obj_response = regexExtratoContFundoGarantFGTS(
-                pdf_data, obj_response)
-        elif regex_grrf_fgts(pdf_data, obj_response) is not None:
-            obj_response = regex_grrf_fgts(pdf_data, obj_response)
-        elif regex_req_seguro_desemprego(pdf_data, obj_response) is not None:
-            obj_response = regex_req_seguro_desemprego(pdf_data, obj_response)
-        elif regexExtratoFGTSTrabalhador(pdf_data, obj_response) is not None:
-            obj_response = regexExtratoFGTSTrabalhador(pdf_data, obj_response)
-        elif regex_certificadoRegFGTS(pdf_data, obj_response) is not None:
-            obj_response = regex_certificadoRegFGTS(pdf_data, obj_response)
-        elif regexProgramacaoFerias(pdf_data, obj_response) is not None:
-            obj_response = regexProgramacaoFerias(pdf_data, obj_response)
-        elif regex_relatorioReembolso(pdf_data, obj_response) is not None:
-            obj_response = regex_relatorioReembolso(pdf_data, obj_response)
-        elif regex_situacao_fiscal(pdf_data, obj_response) is not None:
-            obj_response = regex_situacao_fiscal(pdf_data, obj_response)
-        elif regex_situacao_fiscal_v2(pdf_data, obj_response) is not None:
-            obj_response = regex_situacao_fiscal_v2(pdf_data, obj_response)
-        elif regex_compArrecDARF(pdf_data, obj_response) is not None:
-            obj_response = regex_compArrecDARF(pdf_data, obj_response)
-        elif regex_compArrecDAS(pdf_data, obj_response) is not None:
-            obj_response = regex_compArrecDAS(pdf_data, obj_response)
-        elif regex_kit_admissao(pdf_data, obj_response) is not None:
-            obj_response = regex_kit_admissao(pdf_data, obj_response)
-        elif regex_gps_web(pdf_data, obj_response) is not None:
-            obj_response = regex_gps_web(pdf_data, obj_response)
-        elif etiqueta_CTPS(pdf_data, obj_response) is not None:
-            obj_response = etiqueta_CTPS(pdf_data, obj_response)
-        elif regex_adiantamento(pdf_data, obj_response) is not None:
-            obj_response = regex_adiantamento(pdf_data, obj_response)
-        else:
-            print("LOG: Nenhum regex especifico funcionou, usando generico.")
-            obj_response = regex_generic(pdf_data, obj_response)
-    except AttributeError as e:
-        print(f"LOG: Erro de Atributo (Provavel falha de Regex): {e}")
-        traceback.print_exc()
-        obj_response = regex_generic(pdf_data, obj_response)
-    except Exception as e:
-        print(f"LOG: Erro Inesperado na identificacao: {e}")
-        traceback.print_exc()
-        obj_response = regex_generic(pdf_data, obj_response)
+        # Lista de tentativas
+        possiveis_retornos = [
+            regex_contra_cheque(pdf_data, obj_response),
+            regex_folha_pagamento(pdf_data, obj_response),
+            regex_fgts(pdf_data, obj_response),
+            regex_fgts_v2(pdf_data, obj_response),
+            regex_consignado(pdf_data, obj_response),
+            regex_gps(pdf_data, obj_response),
+            regex_dae(pdf_data, obj_response),
+            regex_grrf_relatorio_v2(pdf_data, obj_response),
+            regex_re(pdf_data, obj_response),
+            regex_re_v2(pdf_data, obj_response),
+            regex_gfip_rubrica(pdf_data, obj_response),
+            regex_compensacao(pdf_data, obj_response),
+            regex_envio_arquivos(pdf_data, obj_response),
+            regex_grrf_relatorio(pdf_data, obj_response),
+            regex_Irpf(pdf_data, obj_response),
+            regex_renuncia_vale(pdf_data, obj_response),
+            regex_defis(pdf_data, obj_response),
+            regex_dma_resumo(pdf_data, obj_response),
+            regex_dmd_mov(pdf_data, obj_response),
+            regex_efd_contribuicoes(pdf_data, obj_response),
+            regex_gps_parcelamento(pdf_data, obj_response),
+            regex_recibo_ferias(pdf_data, obj_response),
+            regex_empreg_indenizado(pdf_data, obj_response),
+            regex_empreg_indenizadoV2(pdf_data, obj_response),
+            regex_fgts_chave(pdf_data, obj_response),
+            regex_fgts_chave_v2(pdf_data, obj_response),
+            regex_termo_rescisao_frente(pdf_data, obj_response),
+            regex_termo_rescisao_verso(pdf_data, obj_response),
+            regex_relacao_salarios_contribuicao(pdf_data, obj_response),
+            regex_darf(pdf_data, obj_response),
+            regex_iss(pdf_data, obj_response),
+            regex_das(pdf_data, obj_response),
+            regex_AvisoFerias(pdf_data, obj_response),
+            regex_CartaReferencia(pdf_data, obj_response),
+            regex_CadNacPessJur(pdf_data, obj_response),
+            regex_CertidaoFederalCond(pdf_data, obj_response),
+            regexExtratoContFundoGarantFGTS(pdf_data, obj_response),
+            regex_grrf_fgts(pdf_data, obj_response),
+            regex_req_seguro_desemprego(pdf_data, obj_response),
+            regexExtratoFGTSTrabalhador(pdf_data, obj_response),
+            regex_certificadoRegFGTS(pdf_data, obj_response),
+            regexProgramacaoFerias(pdf_data, obj_response),
+            regex_relatorioReembolso(pdf_data, obj_response),
+            regex_situacao_fiscal(pdf_data, obj_response),
+            regex_situacao_fiscal_v2(pdf_data, obj_response),
+            regex_compArrecDARF(pdf_data, obj_response),
+            regex_compArrecDAS(pdf_data, obj_response),
+            regex_kit_admissao(pdf_data, obj_response),
+            regex_gps_web(pdf_data, obj_response),
+            etiqueta_CTPS(pdf_data, obj_response),
+            regex_adiantamento(pdf_data, obj_response)
+        ]
 
+        # Verifica qual funcionou (o primeiro que não for None)
+        encontrou = False
+        for tentativa in possiveis_retornos:
+            if tentativa is not None:
+                obj_response = tentativa
+                encontrou = True
+                break
+        
+        # Se nenhum encontrou, tenta genérico
+        if not encontrou:
+            print("LOG: Nenhum regex especifico funcionou, usando generico.")
+            try:
+                temp = regex_generic(pdf_data, obj_response)
+                if temp: obj_response = temp
+            except:
+                pass # Se der erro no genérico, mantém o objeto padrão
+
+    except Exception as e:
+        print(f"LOG: Erro durante identificação (Crash evitado): {e}")
+        # Se quebrar, garante que obj_response existe
+        if obj_response is None:
+            obj_response = get_default_response(file_name, arquivo)
+
+ 
+    # Garante que obj_response é um dicionário e tem as chaves // Se por algum motivo virou None ou string no caminho, reseta.
+    if not isinstance(obj_response, dict):
+        obj_response = get_default_response(file_name, arquivo)
+        obj_response["Erro"] = "Objeto corrompido durante regex"
+
+    #Mes/Ano
     try:
         obj_response["Mes"] = int(obj_response.get("Mes") or 0)
     except:
         obj_response["Mes"] = 0
-
+    
     try:
         obj_response["Ano"] = int(obj_response.get("Ano") or 0)
     except:
         obj_response["Ano"] = 0
 
+    #Valores Monetários
     campos_monetarios = ["Valor", "Juros", "Multa", "Total"]
-    
     for campo in campos_monetarios:
-        valor_original = obj_response.get(campo)
-        
-        if valor_original is None or valor_original == "":
-            obj_response[campo] = 0
-            continue
-            
-        if isinstance(valor_original, str):
-            try:
-                limpo = valor_original.replace(".", "")
-                limpo = limpo.replace(",", "")
-                obj_response[campo] = int(limpo)
-            except ValueError:
+        try:
+            val = obj_response.get(campo)
+            if val is None or val == "":
                 obj_response[campo] = 0
-        elif isinstance(valor_original, (int, float)):
-             obj_response[campo] = int(valor_original)
-        else:
-             obj_response[campo] = 0
+                continue
+            
+            if isinstance(val, str):
+                limpo = val.replace(".", "").replace(",", "")
+                if limpo.strip() == "": # Verifica se virou string vazia
+                     obj_response[campo] = 0
+                else:
+                    obj_response[campo] = int(limpo)
+            elif isinstance(val, (int, float)):
+                obj_response[campo] = int(val)
+        except:
+            obj_response[campo] = 0
 
+    #Strings Nulas
     campos_texto = ["Cnpj", "Descricao", "Nome", "Tipo", "Vencimento"]
     for campo in campos_texto:
         if obj_response.get(campo) is None:
-             obj_response[campo] = ""
+            obj_response[campo] = ""
 
-    print(f"LOG: Identificacao Concluida. Tipo detectado: {obj_response.get('Descricao', 'N/A')} | Nome: {obj_response.get('Nome', 'N/A')}")
+    print(f"LOG: Identificacao Concluida. Tipo: {obj_response.get('Descricao', 'N/A')}")
     return obj_response
