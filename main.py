@@ -39,6 +39,7 @@ def save_error(file_name, obj=None, error_msg=None):
 
 def sendObject(obj, token, file_name):
     from SendRequests import sendRequest
+    # print(f"DEBUG JSON ENVIADO: {obj}")
     
     # [CORREÇÃO] Remove a chave 'Erro' se existir, pois a API XData não aceita
     if isinstance(obj, dict) and "Erro" in obj:

@@ -33,7 +33,6 @@ def regex_re_v2(contra_cheque, obj_response):
                 else:
                     obj_response["Cnpj"] = cnpj_extraido
             else:
-
                 obj_response["Cnpj"] = "" 
 
 
@@ -48,7 +47,6 @@ def regex_re_v2(contra_cheque, obj_response):
                     obj_response["Ano"] = None
                     obj_response["Erro"] = "Formato inesperado para a competência encontrada."
             else:
-
                 competencia_alt_match = findCompetenciaAlternativa.search(contra_cheque)
                 if competencia_alt_match:
                     try:
@@ -76,10 +74,14 @@ def regex_re_v2(contra_cheque, obj_response):
                 DD, MM, AA = match_validade.group().split('/')
                 obj_response["Vencimento"] = f"{AA}-{MM}-{DD}"
 
-            # Valida e converte Mes e Ano para inteiros
             if obj_response.get("Mes") is not None:
                 try:
                     obj_response["Mes"] = int(obj_response["Mes"])
+                    
+                    if obj_response["Mes"] == 13:
+                        obj_response["Mes"] = 12
+                    # -----------------------------
+
                 except ValueError:
                     obj_response["Erro"] = "Valor de 'Mes' não é um número válido."
             else:
